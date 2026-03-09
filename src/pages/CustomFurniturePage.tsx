@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { usePageMeta } from '../hooks/usePageMeta'
 
@@ -31,8 +31,8 @@ export function CustomFurniturePage() {
     dimensions: '',
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [configError, setConfigError] = useState('')
   const [submitError, setSubmitError] = useState('')
-  const formRef = useRef<HTMLFormElement | null>(null)
 
   const materialConfig = {
     roble: {
@@ -122,6 +122,9 @@ export function CustomFurniturePage() {
     if (submitError) {
       setSubmitError('')
     }
+    if (configError) {
+      setConfigError('')
+    }
   }
 
   const clearFieldError = (fieldName: string) => {
@@ -133,6 +136,9 @@ export function CustomFurniturePage() {
     })
     if (submitError) {
       setSubmitError('')
+    }
+    if (configError) {
+      setConfigError('')
     }
   }
 
@@ -163,10 +169,12 @@ export function CustomFurniturePage() {
     if (target.name === 'finish') {
       clearFieldError('acabado')
     }
+    if (configError) {
+      setConfigError('')
+    }
   }
 
   const buildRequestData = () => ({
-    ...formData,
     tipo: config.type,
     medidas: config.dimensions.trim(),
     madera: config.material,
@@ -177,13 +185,17 @@ export function CustomFurniturePage() {
     descripcion: formData.descripcion.trim(),
   })
 
-  const validateRequestData = (data: ReturnType<typeof buildRequestData>) => {
+  const validateConfigData = (data: ReturnType<typeof buildRequestData>) => {
     const nextErrors: Record<string, string> = {}
-
     if (!data.tipo) nextErrors.tipo = 'Seleccioná un tipo de mueble.'
     if (!data.madera) nextErrors.madera = 'Seleccioná una madera.'
     if (!data.acabado) nextErrors.acabado = 'Seleccioná un acabado.'
     if (!data.medidas) nextErrors.medidas = 'Indicá medidas aproximadas.'
+    return nextErrors
+  }
+
+  const validateFullData = (data: ReturnType<typeof buildRequestData>) => {
+    const nextErrors = validateConfigData(data)
     if (!data.nombre) nextErrors.nombre = 'Ingresá tu nombre y apellido.'
     if (!data.email) nextErrors.email = 'Ingresá tu email.'
     if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
@@ -197,57 +209,75 @@ export function CustomFurniturePage() {
     return nextErrors
   }
 
-  const sendWhatsAppRequest = () => {
-    const requestData = buildRequestData()
-    setFormData((prev) => ({
-      ...prev,
-      tipo: config.type,
-      medidas: requestData.medidas,
-      madera: config.material,
-      acabado: finishMap[config.finish as keyof typeof finishMap],
-      nombre: requestData.nombre,
-      email: requestData.email,
-      whatsapp: requestData.whatsapp,
-      descripcion: requestData.descripcion,
-    }))
-    const nextErrors = validateRequestData(requestData)
-    if (Object.keys(nextErrors).length > 0) {
-      setErrors(nextErrors)
-      setSubmitError(
-        'Completá los campos obligatorios para enviar la solicitud por WhatsApp.',
-      )
-      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      return
-    }
-    setErrors({})
-    setSubmitError('')
+  const openWhatsApp = (requestData: ReturnType<typeof buildRequestData>) => {
     const selectedMaterial =
       materialConfig[requestData.madera as keyof typeof materialConfig]?.name ??
       requestData.madera
-    const message = [
+    const messageLines = [
       'Hola ANJU, quiero solicitar un mueble a medida.',
       `Tipo de mueble: ${requestData.tipo}`,
       `Madera: ${selectedMaterial}`,
       `Acabado: ${requestData.acabado}`,
       `Medidas aproximadas: ${requestData.medidas}`,
-      `Descripción adicional: ${requestData.descripcion}`,
-      '',
-      `Nombre: ${requestData.nombre}`,
-      `Email: ${requestData.email}`,
-      `WhatsApp: ${requestData.whatsapp}`,
-    ].join('\n')
+    ]
+    if (requestData.descripcion) {
+      messageLines.push(`Descripción adicional: ${requestData.descripcion}`)
+    }
+    if (requestData.nombre || requestData.email || requestData.whatsapp) {
+      messageLines.push('')
+      if (requestData.nombre) {
+        messageLines.push(`Nombre: ${requestData.nombre}`)
+      }
+      if (requestData.email) {
+        messageLines.push(`Email: ${requestData.email}`)
+      }
+      if (requestData.whatsapp) {
+        messageLines.push(`WhatsApp: ${requestData.whatsapp}`)
+      }
+    }
+    const message = messageLines.join('\n')
     window.open(
       `https://wa.me/5491144181328?text=${encodeURIComponent(message)}`,
       '_blank',
     )
   }
 
-  const handleSendRequest = () => {
-    sendWhatsAppRequest()
+  const handleContinueWithDesign = () => {
+    const requestData = buildRequestData()
+    const nextErrors = validateConfigData(requestData)
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors((prev) => ({
+        ...prev,
+        ...nextErrors,
+      }))
+      setConfigError('Completá los datos mínimos para continuar por WhatsApp.')
+      return
+    }
+    setErrors((prev) => {
+      const next = { ...prev }
+      delete next.tipo
+      delete next.madera
+      delete next.acabado
+      delete next.medidas
+      return next
+    })
+    setConfigError('')
+    openWhatsApp(requestData)
   }
 
-  const handleSubmit = () => {
-    sendWhatsAppRequest()
+  const handleSubmitRequest = () => {
+    const requestData = buildRequestData()
+    const nextErrors = validateFullData(requestData)
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      setSubmitError(
+        'Completá los campos obligatorios para enviar la solicitud por WhatsApp.',
+      )
+      return
+    }
+    setErrors({})
+    setSubmitError('')
+    openWhatsApp(requestData)
   }
 
   const fieldClass =
@@ -321,6 +351,9 @@ export function CustomFurniturePage() {
                   </button>
                 ))}
               </div>
+              {errors.tipo ? (
+                <p className="text-xs text-red-600">{errors.tipo}</p>
+              ) : null}
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="space-y-2.5 text-sm">
@@ -356,6 +389,9 @@ export function CustomFurniturePage() {
                     </button>
                   ))}
                 </div>
+                {errors.madera ? (
+                  <p className="text-xs text-red-600">{errors.madera}</p>
+                ) : null}
               </div>
               <div className="space-y-2.5 text-sm">
                 <p className="font-semibold text-neutral-900">Acabado</p>
@@ -363,12 +399,16 @@ export function CustomFurniturePage() {
                   name="finish"
                   value={config.finish}
                   onChange={handleConfigChange}
-                  className={fieldClass}
+                  className={`${fieldClass} ${errors.acabado ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                  aria-invalid={Boolean(errors.acabado)}
                 >
                   <option value="mate">Mate</option>
                   <option value="brillo">Brillo</option>
                   <option value="natural">Natural</option>
                 </select>
+                {errors.acabado ? (
+                  <p className="text-xs text-red-600">{errors.acabado}</p>
+                ) : null}
               </div>
             </div>
             <div className="space-y-2.5 text-sm">
@@ -381,8 +421,12 @@ export function CustomFurniturePage() {
                 value={config.dimensions}
                 onChange={handleConfigChange}
                 placeholder="Ej: 180 x 80 cm, altura 75 cm"
-                className={fieldClass}
+                className={`${fieldClass} ${errors.medidas ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.medidas)}
               />
+              {errors.medidas ? (
+                <p className="text-xs text-red-600">{errors.medidas}</p>
+              ) : null}
             </div>
           </div>
           <div className="rounded-2xl border border-madera/15 bg-crema/60 p-5 sm:p-6 space-y-4 shadow-sm transition-all duration-300">
@@ -396,11 +440,14 @@ export function CustomFurniturePage() {
             </div>
             <button
               type="button"
-              onClick={handleSendRequest}
+              onClick={handleContinueWithDesign}
               className="w-full rounded-full bg-madera text-white text-sm font-semibold px-4 py-3.5 shadow-md hover:bg-madera/90 transition-all duration-200 hover:-translate-y-0.5"
             >
               Continuar con este diseño
             </button>
+            {configError ? (
+              <p className="text-xs text-red-600">{configError}</p>
+            ) : null}
           </div>
         </div>
       </section>
@@ -454,7 +501,7 @@ export function CustomFurniturePage() {
         </div>
       ) : (
         <form
-          ref={formRef}
+          onSubmit={(event) => event.preventDefault()}
           className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-7 shadow-madera scroll-fade opacity-0"
         >
           {submitError ? (
@@ -671,7 +718,7 @@ export function CustomFurniturePage() {
 
           <button
             type="button"
-            onClick={handleSubmit}
+            onClick={handleSubmitRequest}
             aria-label="Enviar solicitud"
             className="w-full inline-flex items-center justify-center rounded-full bg-madera text-white text-base font-semibold px-6 py-4 shadow-[0_14px_30px_rgba(139,90,43,0.28)] hover:bg-madera/90 transition-all duration-200 hover:-translate-y-0.5"
           >
