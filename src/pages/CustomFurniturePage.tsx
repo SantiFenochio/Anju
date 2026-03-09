@@ -1,0 +1,548 @@
+import type { FormEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { usePageMeta } from '../hooks/usePageMeta'
+
+export function CustomFurniturePage() {
+  usePageMeta({
+    title: 'Muebles a medida en Buenos Aires · ANJU Carpintería',
+    description:
+      'Pedí muebles de madera a medida con ANJU Carpintería en Buenos Aires. Completá el formulario y recibí un presupuesto personalizado para tu proyecto.',
+    keywords:
+      'muebles a medida Buenos Aires, presupuesto carpintería ANJU, muebles personalizados CABA',
+  })
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [formData, setFormData] = useState({
+    tipo: '',
+    madera: '',
+    acabado: '',
+    medidas: '',
+    nombre: '',
+    email: '',
+    whatsapp: '',
+    descripcion: '',
+  })
+
+  const [config, setConfig] = useState({
+    type: 'escritorio',
+    material: 'roble',
+    finish: 'mate',
+    dimensions: '',
+  })
+  const formRef = useRef<HTMLFormElement | null>(null)
+
+  const materialConfig = {
+    roble: {
+      name: 'Roble',
+      color: '#8B5A2B',
+      img: 'https://images.pexels.com/photos/3965534/pexels-photo-3965534.jpeg?auto=compress&cs=tinysrgb&w=800',
+    },
+    pino: {
+      name: 'Pino claro',
+      color: '#D8C7A0',
+      img: 'https://images.pexels.com/photos/3965552/pexels-photo-3965552.jpeg?auto=compress&cs=tinysrgb&w=800',
+    },
+    cedro: {
+      name: 'Cedro',
+      color: '#A65A3A',
+      img: 'https://images.pexels.com/photos/7652083/pexels-photo-7652083.jpeg?auto=compress&cs=tinysrgb&w=800',
+    },
+  } as const
+
+  const configuratorPreview = {
+    roble: {
+      escritorio:
+        'https://images.pexels.com/photos/3747447/pexels-photo-3747447.jpeg?auto=compress&cs=tinysrgb&w=900',
+      mesa: 'https://images.pexels.com/photos/37347/office-sitting-room-executive-sitting.jpg?auto=compress&cs=tinysrgb&w=900',
+      reloj:
+        'https://images.pexels.com/photos/1007335/pexels-photo-1007335.jpeg?auto=compress&cs=tinysrgb&w=900',
+    },
+    pino: {
+      escritorio:
+        'https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg?auto=compress&cs=tinysrgb&w=900',
+      mesa: 'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=900',
+      reloj:
+        'https://images.pexels.com/photos/707676/pexels-photo-707676.jpeg?auto=compress&cs=tinysrgb&w=900',
+    },
+    cedro: {
+      escritorio:
+        'https://images.pexels.com/photos/705439/pexels-photo-705439.jpeg?auto=compress&cs=tinysrgb&w=900',
+      mesa: 'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=900',
+      reloj:
+        'https://images.pexels.com/photos/707676/pexels-photo-707676.jpeg?auto=compress&cs=tinysrgb&w=900',
+    },
+  } as const
+
+  function shadeColor(hex: string, percent: number) {
+    const clean = hex.replace('#', '')
+    const num = parseInt(clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean, 16)
+    let r = (num >> 16) & 255
+    let g = (num >> 8) & 255
+    let b = num & 255
+    r = Math.min(255, Math.max(0, Math.floor((r * (100 + percent)) / 100)))
+    g = Math.min(255, Math.max(0, Math.floor((g * (100 + percent)) / 100)))
+    b = Math.min(255, Math.max(0, Math.floor((b * (100 + percent)) / 100)))
+    return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0')}`
+  }
+
+  const previewImg =
+    (materialConfig as Record<string, { img: string }>)[formData.madera]?.img ??
+    'https://images.pexels.com/photos/3735481/pexels-photo-3735481.jpeg?auto=compress&cs=tinysrgb&w=800'
+
+  const previewType = config.type === 'estanteria' ? 'escritorio' : config.type
+  const previewConfigImage =
+    configuratorPreview[config.material as keyof typeof configuratorPreview]?.[
+      previewType as keyof (typeof configuratorPreview)['roble']
+    ] ?? configuratorPreview.roble.escritorio
+
+  const finishMap = {
+    mate: 'mate',
+    brillo: 'brillante',
+    natural: 'a-definir',
+  } as const
+
+  const handleChange = (
+    event: FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    const target = event.currentTarget
+    setFormData((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+    }))
+  }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsLoading(false), 700)
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  const handleConfigChange = (
+    event: FormEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const target = event.currentTarget
+    setConfig((prev) => ({
+      ...prev,
+      [target.name]: target.value,
+    }))
+  }
+
+  const handleSendRequest = () => {
+    setFormData((prev) => ({
+      ...prev,
+      tipo: config.type,
+      medidas: config.dimensions,
+      madera: config.material,
+      acabado: finishMap[config.finish as keyof typeof finishMap],
+    }))
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const handleSubmit = () => {
+    const selectedMaterial =
+      materialConfig[formData.madera as keyof typeof materialConfig]?.name ?? formData.madera
+    const message = [
+      'Hola ANJU, quiero un presupuesto para:',
+      `Tipo de mueble: ${formData.tipo}`,
+      `Madera: ${selectedMaterial}`,
+      `Acabado: ${formData.acabado}`,
+      `Medidas aproximadas: ${formData.medidas}`,
+      `Descripción: ${formData.descripcion}`,
+      `Nombre: ${formData.nombre}`,
+      `Email: ${formData.email}`,
+      `WhatsApp: ${formData.whatsapp}`,
+    ].join('\n')
+    window.open(
+      `https://wa.me/5491144181328?text=${encodeURIComponent(message)}`,
+      '_blank',
+    )
+  }
+
+  const fieldClass =
+    'w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-800 transition-colors placeholder:text-neutral-400 hover:border-madera/35 focus:outline-none focus:ring-2 focus:ring-oliva/60'
+  const labelClass = 'block text-sm font-semibold text-neutral-900'
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-10 sm:py-12 space-y-7">
+      <nav aria-label="Breadcrumb" className="text-xs text-madera/70">
+        <ol className="flex flex-wrap items-center gap-2">
+          <li>
+            <Link
+              to="/"
+              className="transition-colors hover:text-madera hover:underline decoration-madera/50 underline-offset-4"
+            >
+              Inicio
+            </Link>
+          </li>
+          <li className="text-madera/40">›</li>
+          <li className="text-madera">Muebles a medida</li>
+        </ol>
+      </nav>
+      <section className="space-y-3">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-neutral-900">
+          Muebles a medida
+        </h1>
+        <p className="text-base text-neutral-700">
+          Contanos qué necesitás y preparamos un diseño y presupuesto a medida
+          para tu hogar, oficina o local en CABA y Zona Norte.
+        </p>
+      </section>
+
+      <section className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-7 shadow-madera scroll-fade opacity-0 transition-all duration-300">
+        <div className="space-y-2.5">
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-oliva">
+            Configurador rápido
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+            Definí tu mueble ideal
+          </h2>
+          <p className="text-base text-neutral-700 max-w-2xl">
+            Seleccioná el tipo, la madera, el acabado y las medidas para avanzar
+            con tu solicitud personalizada.
+          </p>
+        </div>
+        <div className="grid gap-7 md:grid-cols-[2fr,1fr]">
+          <div className="space-y-6">
+            <div className="space-y-2.5 text-sm">
+              <p className="font-semibold text-neutral-900">Tipo de mueble</p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  { key: 'escritorio', label: 'Escritorio' },
+                  { key: 'mesa', label: 'Mesa' },
+                  { key: 'reloj', label: 'Reloj' },
+                  { key: 'estanteria', label: 'Estantería' },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    aria-pressed={config.type === item.key}
+                    onClick={() =>
+                      setConfig((prev) => ({
+                        ...prev,
+                        type: item.key,
+                      }))
+                    }
+                    className={`rounded-2xl border px-4 py-3.5 text-left text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-oliva/50 ${config.type === item.key ? 'border-madera/60 bg-gradient-to-br from-crema to-white text-madera shadow-[0_10px_24px_rgba(139,90,43,0.14)] -translate-y-0.5' : 'border-neutral-200 text-neutral-700 hover:border-madera/35 hover:text-madera hover:shadow-sm hover:-translate-y-0.5'}`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-2.5 text-sm">
+                <p className="font-semibold text-neutral-900">Madera</p>
+                <div className="grid grid-cols-3 gap-2.5">
+                  {Object.entries(materialConfig).map(([key, conf]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      aria-label={`Seleccionar madera ${conf.name}`}
+                      aria-pressed={config.material === key}
+                      onClick={() =>
+                        setConfig((prev) => ({
+                          ...prev,
+                          material: key,
+                        }))
+                      }
+                      className={`group rounded-xl border p-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-oliva/50 ${config.material === key ? 'border-madera/60 bg-crema/60 shadow-sm' : 'border-neutral-200 bg-white hover:border-madera/35'}`}
+                      title={conf.name}
+                    >
+                      <span
+                        className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-neutral-300 transition-transform duration-200 group-hover:scale-105 ${config.material === key ? 'ring-2 ring-madera ring-offset-2 ring-offset-white' : ''}`}
+                        style={{
+                          backgroundImage:
+                            `repeating-linear-gradient(45deg, ${conf.color}, ${conf.color} 8px, ${shadeColor(conf.color, -10)} 12px, ${conf.color} 16px)`,
+                          backgroundSize: '200% 200%',
+                        }}
+                      />
+                      <span className="mt-1.5 block text-[11px] font-medium text-neutral-700">
+                        {conf.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-2.5 text-sm">
+                <p className="font-semibold text-neutral-900">Acabado</p>
+                <select
+                  name="finish"
+                  value={config.finish}
+                  onChange={handleConfigChange}
+                  className={fieldClass}
+                >
+                  <option value="mate">Mate</option>
+                  <option value="brillo">Brillo</option>
+                  <option value="natural">Natural</option>
+                </select>
+              </div>
+            </div>
+            <div className="space-y-2.5 text-sm">
+              <label className={labelClass} htmlFor="config-dimensions">
+                Medidas aproximadas
+              </label>
+              <input
+                id="config-dimensions"
+                name="dimensions"
+                value={config.dimensions}
+                onChange={handleConfigChange}
+                placeholder="Ej: 180 x 80 cm, altura 75 cm"
+                className={fieldClass}
+              />
+            </div>
+          </div>
+          <div className="rounded-2xl border border-madera/15 bg-crema/60 p-5 sm:p-6 space-y-4 shadow-sm transition-all duration-300">
+            <div className="rounded-2xl overflow-hidden border border-madera/10 bg-white">
+              <img
+                src={previewConfigImage}
+                alt={`Preview ${config.type} en ${materialConfig[config.material as keyof typeof materialConfig]?.name}`}
+                className="w-full h-44 sm:h-48 object-cover"
+                loading="lazy"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleSendRequest}
+              className="w-full rounded-full bg-madera text-white text-sm font-semibold px-4 py-3.5 shadow-md hover:bg-madera/90 transition-all duration-200 hover:-translate-y-0.5"
+            >
+              Continuar con este diseño
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-madera/10 bg-crema/60 p-4 sm:p-5 space-y-2.5 shadow-sm">
+        <p className="text-xs font-semibold tracking-[0.18em] uppercase text-oliva">
+          Antes de enviar
+        </p>
+        <p className="text-sm text-neutral-700">
+          Para recibir una propuesta más precisa, compartinos medidas aproximadas,
+          una foto de referencia y el uso principal del mueble.
+        </p>
+      </section>
+
+      {isLoading ? (
+        <div className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 space-y-4">
+          <div className="h-48 rounded-2xl skeleton-shimmer animate-shimmer bg-crema/60" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <div className="h-3 w-36 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+              <div className="h-10 rounded-md skeleton-shimmer animate-shimmer bg-crema/60" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-3 w-40 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+              <div className="h-10 rounded-md skeleton-shimmer animate-shimmer bg-crema/60" />
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={`custom-skeleton-${index}`} className="space-y-2">
+                <div className="h-3 w-28 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+                <div className="h-10 rounded-md skeleton-shimmer animate-shimmer bg-crema/60" />
+              </div>
+            ))}
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <div className="h-3 w-32 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+              <div className="h-10 rounded-md skeleton-shimmer animate-shimmer bg-crema/60" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-3 w-24 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+              <div className="h-10 rounded-md skeleton-shimmer animate-shimmer bg-crema/60" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="h-3 w-52 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+            <div className="h-28 rounded-md skeleton-shimmer animate-shimmer bg-crema/60" />
+          </div>
+          <div className="h-11 w-48 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
+        </div>
+      ) : (
+        <form
+          ref={formRef}
+          className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-7 shadow-madera scroll-fade opacity-0"
+        >
+          <div className="rounded-2xl overflow-hidden border border-madera/10 bg-neutral-100">
+            <img
+              src={previewImg}
+              alt={`Preview del mueble con material ${formData.madera}`}
+              className="w-full h-40 sm:h-56 object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="tipo">
+                Tipo de mueble
+              </label>
+              <input
+                id="tipo"
+                name="tipo"
+                required
+                value={formData.tipo}
+                onChange={handleChange}
+                placeholder="Ej: Escritorio en L, mesa de comedor, estantería..."
+                className={fieldClass}
+              />
+            </div>
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="medidas">
+                Medidas aproximadas
+              </label>
+              <input
+                id="medidas"
+                name="medidas"
+                required
+                value={formData.medidas}
+                onChange={handleChange}
+                placeholder="Ej: 180 x 80 cm, altura 75 cm"
+                className={fieldClass}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-3">
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="madera">
+                Madera preferida
+              </label>
+              <select
+                id="madera"
+                name="madera"
+                value={formData.madera}
+                onChange={handleChange}
+                className={fieldClass}
+              >
+                <option value="roble">Roble</option>
+                <option value="pino">Pino</option>
+                <option value="cedro">Cedro</option>
+                <option value="otro">Otro / a definir</option>
+              </select>
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {Object.entries(materialConfig).map(([key, conf]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    aria-label={`Seleccionar material: ${conf.name}`}
+                    aria-pressed={formData.madera === key}
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        madera: key,
+                      }))
+                    }
+                    className={`group rounded-xl border p-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-oliva/50 ${formData.madera === key ? 'border-madera/60 bg-crema/60 shadow-sm' : 'border-neutral-200 bg-white hover:border-madera/35'}`}
+                    title={conf.name}
+                  >
+                    <span
+                      className={`mx-auto flex h-8 w-8 items-center justify-center rounded-full ring-1 ring-neutral-300 transition-transform duration-200 group-hover:scale-105 ${formData.madera === key ? 'ring-2 ring-madera ring-offset-2 ring-offset-white' : ''}`}
+                      style={{
+                        backgroundImage:
+                          `repeating-linear-gradient(45deg, ${conf.color}, ${conf.color} 8px, ${shadeColor(conf.color, -10)} 12px, ${conf.color} 16px)`,
+                        backgroundSize: '200% 200%',
+                      }}
+                    />
+                    <span className="mt-1 block text-[10px] font-medium text-neutral-700">
+                      {conf.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="acabado">
+                Acabado
+              </label>
+              <select
+                id="acabado"
+                name="acabado"
+                value={formData.acabado}
+                onChange={handleChange}
+                className={fieldClass}
+              >
+                <option value="mate">Mate</option>
+                <option value="satinado">Satinado</option>
+                <option value="brillante">Brillante</option>
+                <option value="a-definir">A definir juntos</option>
+              </select>
+            </div>
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="whatsapp">
+                WhatsApp
+              </label>
+              <input
+                id="whatsapp"
+                name="whatsapp"
+                required
+                value={formData.whatsapp}
+                onChange={handleChange}
+                placeholder="+54 9 11 ..."
+                className={fieldClass}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="nombre">
+                Nombre y apellido
+              </label>
+              <input
+                id="nombre"
+                name="nombre"
+                required
+                value={formData.nombre}
+                onChange={handleChange}
+                className={fieldClass}
+              />
+            </div>
+            <div className="space-y-2 text-sm">
+              <label className={labelClass} htmlFor="email">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className={fieldClass}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2 text-sm">
+            <label className={labelClass} htmlFor="descripcion">
+              Contanos sobre el espacio y el uso
+            </label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              required
+              rows={4}
+              value={formData.descripcion}
+              onChange={handleChange}
+              placeholder="Ej: Escritorio para home office en living, espacio reducido, necesito cajones y pasacables..."
+              className={fieldClass}
+            />
+            <p className="text-xs text-neutral-500">
+              Si tenés referencias (links, Instagram, Pinterest) podés pegarlas
+              acá también.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleSubmit}
+            aria-label="Enviar solicitud"
+            className="w-full inline-flex items-center justify-center rounded-full bg-madera text-white text-base font-semibold px-6 py-4 shadow-[0_14px_30px_rgba(139,90,43,0.28)] hover:bg-madera/90 transition-all duration-200 hover:-translate-y-0.5"
+          >
+            Enviar pedido por WhatsApp
+          </button>
+        </form>
+      )}
+    </div>
+  )
+}
