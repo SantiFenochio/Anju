@@ -5,7 +5,6 @@ import type { Product } from '../../types/cart'
 import { products } from '../../data/products'
 import { FloatingWhatsAppButton } from '../whatsapp/FloatingWhatsAppButton'
 import { NewsletterForm } from '../newsletter/NewsletterForm'
-import { useCart } from '../../contexts/CartContext'
 
 type LayoutProps = {
   children: ReactNode
@@ -20,7 +19,6 @@ export function SiteLayout({ children }: LayoutProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { totalItems } = useCart()
 
   const trimmedQuery = searchQuery.trim().toLowerCase()
 
@@ -246,27 +244,12 @@ export function SiteLayout({ children }: LayoutProps) {
                 Sobre nosotros
               </NavLink>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate('/carrito')}
-              aria-label="Abrir carrito"
-              className="relative inline-flex items-center justify-center h-11 w-11 sm:h-10 sm:w-10 rounded-full bg-madera text-white shadow-sm hover:bg-madera/90 transition-all overflow-visible shrink-0"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5 sm:h-5 sm:w-5" aria-hidden="true">
-                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.26 14h9.51c.84 0 1.58-.52 1.86-1.3l2.34-6.3H6.21L5.27 4H2v2h2l3.6 7.59-.68 1.55C6.53 15.37 7.04 16 7.74 16H19v-2H7.26ZM6.5 6h12.02l-1.7 4.58c-.12.32-.42.52-.76.52H8.53L6.5 6Z" fill="currentColor" />
-              </svg>
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 min-w-[1.25rem] px-1 rounded-full bg-oliva text-white text-[10px] font-semibold flex items-center justify-center leading-none">
-                  {totalItems}
-                </span>
-              )}
-            </button>
             <a
               href={`https://wa.me/5491144181328?text=${encodeURIComponent('Hola ANJU, quiero presupuesto para...')}`}
               target="_blank"
               rel="noreferrer"
               aria-label="WhatsApp ANJU"
-              className="hidden sm:inline-flex items-center justify-center h-9 px-3 rounded-full bg-oliva text-white text-xs font-medium hover:bg-oliva/90 transition-all"
+              className="hidden sm:inline-flex items-center justify-center h-10 px-4 rounded-full bg-oliva text-white text-sm font-semibold hover:bg-oliva/90 transition-all"
             >
               WhatsApp
             </a>
@@ -314,14 +297,6 @@ export function SiteLayout({ children }: LayoutProps) {
               <NavLink to="/sobre-nosotros" className="px-3 py-3 rounded-md bg-crema/60 hover:bg-crema/80 transition-colors">
                 Sobre nosotros
               </NavLink>
-              <button
-                type="button"
-                aria-label="Ir al carrito"
-                onClick={() => navigate('/carrito')}
-                className="px-3 py-3 rounded-md bg-madera text-white hover:bg-madera/90 transition-colors text-left"
-              >
-                Carrito ({totalItems})
-              </button>
             </div>
           </div>
         </div>

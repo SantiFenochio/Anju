@@ -30,6 +30,8 @@ export function CustomFurniturePage() {
     finish: 'mate',
     dimensions: '',
   })
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitError, setSubmitError] = useState('')
   const formRef = useRef<HTMLFormElement | null>(null)
 
   const materialConfig = {
@@ -106,10 +108,32 @@ export function CustomFurniturePage() {
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const target = event.currentTarget
+    const value = target.value
     setFormData((prev) => ({
       ...prev,
-      [target.name]: target.value,
+      [target.name]: value,
     }))
+    setErrors((prev) => {
+      if (!prev[target.name]) return prev
+      const next = { ...prev }
+      delete next[target.name]
+      return next
+    })
+    if (submitError) {
+      setSubmitError('')
+    }
+  }
+
+  const clearFieldError = (fieldName: string) => {
+    setErrors((prev) => {
+      if (!prev[fieldName]) return prev
+      const next = { ...prev }
+      delete next[fieldName]
+      return next
+    })
+    if (submitError) {
+      setSubmitError('')
+    }
   }
 
   useEffect(() => {
@@ -125,37 +149,105 @@ export function CustomFurniturePage() {
       ...prev,
       [target.name]: target.value,
     }))
+    if (target.name === 'dimensions') {
+      setErrors((prev) => {
+        if (!prev.medidas) return prev
+        const next = { ...prev }
+        delete next.medidas
+        return next
+      })
+      if (submitError) {
+        setSubmitError('')
+      }
+    }
+    if (target.name === 'finish') {
+      clearFieldError('acabado')
+    }
   }
 
-  const handleSendRequest = () => {
+  const buildRequestData = () => ({
+    ...formData,
+    tipo: config.type,
+    medidas: config.dimensions.trim(),
+    madera: config.material,
+    acabado: finishMap[config.finish as keyof typeof finishMap],
+    nombre: formData.nombre.trim(),
+    email: formData.email.trim(),
+    whatsapp: formData.whatsapp.trim(),
+    descripcion: formData.descripcion.trim(),
+  })
+
+  const validateRequestData = (data: ReturnType<typeof buildRequestData>) => {
+    const nextErrors: Record<string, string> = {}
+
+    if (!data.tipo) nextErrors.tipo = 'Seleccioná un tipo de mueble.'
+    if (!data.madera) nextErrors.madera = 'Seleccioná una madera.'
+    if (!data.acabado) nextErrors.acabado = 'Seleccioná un acabado.'
+    if (!data.medidas) nextErrors.medidas = 'Indicá medidas aproximadas.'
+    if (!data.nombre) nextErrors.nombre = 'Ingresá tu nombre y apellido.'
+    if (!data.email) nextErrors.email = 'Ingresá tu email.'
+    if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      nextErrors.email = 'Ingresá un email válido.'
+    }
+    if (!data.whatsapp) nextErrors.whatsapp = 'Ingresá tu WhatsApp.'
+    if (!data.descripcion) {
+      nextErrors.descripcion = 'Contanos brevemente sobre el espacio y uso.'
+    }
+
+    return nextErrors
+  }
+
+  const sendWhatsAppRequest = () => {
+    const requestData = buildRequestData()
     setFormData((prev) => ({
       ...prev,
       tipo: config.type,
-      medidas: config.dimensions,
+      medidas: requestData.medidas,
       madera: config.material,
       acabado: finishMap[config.finish as keyof typeof finishMap],
+      nombre: requestData.nombre,
+      email: requestData.email,
+      whatsapp: requestData.whatsapp,
+      descripcion: requestData.descripcion,
     }))
-    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  const handleSubmit = () => {
+    const nextErrors = validateRequestData(requestData)
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      setSubmitError(
+        'Completá los campos obligatorios para enviar la solicitud por WhatsApp.',
+      )
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      return
+    }
+    setErrors({})
+    setSubmitError('')
     const selectedMaterial =
-      materialConfig[formData.madera as keyof typeof materialConfig]?.name ?? formData.madera
+      materialConfig[requestData.madera as keyof typeof materialConfig]?.name ??
+      requestData.madera
     const message = [
-      'Hola ANJU, quiero un presupuesto para:',
-      `Tipo de mueble: ${formData.tipo}`,
+      'Hola ANJU, quiero solicitar un mueble a medida.',
+      `Tipo de mueble: ${requestData.tipo}`,
       `Madera: ${selectedMaterial}`,
-      `Acabado: ${formData.acabado}`,
-      `Medidas aproximadas: ${formData.medidas}`,
-      `Descripción: ${formData.descripcion}`,
-      `Nombre: ${formData.nombre}`,
-      `Email: ${formData.email}`,
-      `WhatsApp: ${formData.whatsapp}`,
+      `Acabado: ${requestData.acabado}`,
+      `Medidas aproximadas: ${requestData.medidas}`,
+      `Descripción adicional: ${requestData.descripcion}`,
+      '',
+      `Nombre: ${requestData.nombre}`,
+      `Email: ${requestData.email}`,
+      `WhatsApp: ${requestData.whatsapp}`,
     ].join('\n')
     window.open(
       `https://wa.me/5491144181328?text=${encodeURIComponent(message)}`,
       '_blank',
     )
+  }
+
+  const handleSendRequest = () => {
+    sendWhatsAppRequest()
+  }
+
+  const handleSubmit = () => {
+    sendWhatsAppRequest()
   }
 
   const fieldClass =
@@ -216,12 +308,13 @@ export function CustomFurniturePage() {
                     key={item.key}
                     type="button"
                     aria-pressed={config.type === item.key}
-                    onClick={() =>
+                    onClick={() => {
                       setConfig((prev) => ({
                         ...prev,
                         type: item.key,
                       }))
-                    }
+                      clearFieldError('tipo')
+                    }}
                     className={`rounded-2xl border px-4 py-3.5 text-left text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-oliva/50 ${config.type === item.key ? 'border-madera/60 bg-gradient-to-br from-crema to-white text-madera shadow-[0_10px_24px_rgba(139,90,43,0.14)] -translate-y-0.5' : 'border-neutral-200 text-neutral-700 hover:border-madera/35 hover:text-madera hover:shadow-sm hover:-translate-y-0.5'}`}
                   >
                     {item.label}
@@ -239,12 +332,13 @@ export function CustomFurniturePage() {
                       type="button"
                       aria-label={`Seleccionar madera ${conf.name}`}
                       aria-pressed={config.material === key}
-                      onClick={() =>
+                      onClick={() => {
                         setConfig((prev) => ({
                           ...prev,
                           material: key,
                         }))
-                      }
+                        clearFieldError('madera')
+                      }}
                       className={`group rounded-xl border p-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-oliva/50 ${config.material === key ? 'border-madera/60 bg-crema/60 shadow-sm' : 'border-neutral-200 bg-white hover:border-madera/35'}`}
                       title={conf.name}
                     >
@@ -363,6 +457,11 @@ export function CustomFurniturePage() {
           ref={formRef}
           className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-7 shadow-madera scroll-fade opacity-0"
         >
+          {submitError ? (
+            <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {submitError}
+            </div>
+          ) : null}
           <div className="rounded-2xl overflow-hidden border border-madera/10 bg-neutral-100">
             <img
               src={previewImg}
@@ -383,8 +482,12 @@ export function CustomFurniturePage() {
                 value={formData.tipo}
                 onChange={handleChange}
                 placeholder="Ej: Escritorio en L, mesa de comedor, estantería..."
-                className={fieldClass}
+                className={`${fieldClass} ${errors.tipo ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.tipo)}
               />
+              {errors.tipo ? (
+                <p className="text-xs text-red-600">{errors.tipo}</p>
+              ) : null}
             </div>
             <div className="space-y-2 text-sm">
               <label className={labelClass} htmlFor="medidas">
@@ -397,8 +500,12 @@ export function CustomFurniturePage() {
                 value={formData.medidas}
                 onChange={handleChange}
                 placeholder="Ej: 180 x 80 cm, altura 75 cm"
-                className={fieldClass}
+                className={`${fieldClass} ${errors.medidas ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.medidas)}
               />
+              {errors.medidas ? (
+                <p className="text-xs text-red-600">{errors.medidas}</p>
+              ) : null}
             </div>
           </div>
 
@@ -412,7 +519,8 @@ export function CustomFurniturePage() {
                 name="madera"
                 value={formData.madera}
                 onChange={handleChange}
-                className={fieldClass}
+                className={`${fieldClass} ${errors.madera ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.madera)}
               >
                 <option value="roble">Roble</option>
                 <option value="pino">Pino</option>
@@ -426,12 +534,13 @@ export function CustomFurniturePage() {
                     type="button"
                     aria-label={`Seleccionar material: ${conf.name}`}
                     aria-pressed={formData.madera === key}
-                    onClick={() =>
+                    onClick={() => {
                       setFormData((prev) => ({
                         ...prev,
                         madera: key,
                       }))
-                    }
+                      clearFieldError('madera')
+                    }}
                     className={`group rounded-xl border p-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-oliva/50 ${formData.madera === key ? 'border-madera/60 bg-crema/60 shadow-sm' : 'border-neutral-200 bg-white hover:border-madera/35'}`}
                     title={conf.name}
                   >
@@ -449,6 +558,9 @@ export function CustomFurniturePage() {
                   </button>
                 ))}
               </div>
+              {errors.madera ? (
+                <p className="text-xs text-red-600">{errors.madera}</p>
+              ) : null}
             </div>
             <div className="space-y-2 text-sm">
               <label className={labelClass} htmlFor="acabado">
@@ -459,13 +571,17 @@ export function CustomFurniturePage() {
                 name="acabado"
                 value={formData.acabado}
                 onChange={handleChange}
-                className={fieldClass}
+                className={`${fieldClass} ${errors.acabado ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.acabado)}
               >
                 <option value="mate">Mate</option>
                 <option value="satinado">Satinado</option>
                 <option value="brillante">Brillante</option>
                 <option value="a-definir">A definir juntos</option>
               </select>
+              {errors.acabado ? (
+                <p className="text-xs text-red-600">{errors.acabado}</p>
+              ) : null}
             </div>
             <div className="space-y-2 text-sm">
               <label className={labelClass} htmlFor="whatsapp">
@@ -478,8 +594,12 @@ export function CustomFurniturePage() {
                 value={formData.whatsapp}
                 onChange={handleChange}
                 placeholder="+54 9 11 ..."
-                className={fieldClass}
+                className={`${fieldClass} ${errors.whatsapp ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.whatsapp)}
               />
+              {errors.whatsapp ? (
+                <p className="text-xs text-red-600">{errors.whatsapp}</p>
+              ) : null}
             </div>
           </div>
 
@@ -494,8 +614,12 @@ export function CustomFurniturePage() {
                 required
                 value={formData.nombre}
                 onChange={handleChange}
-                className={fieldClass}
+                className={`${fieldClass} ${errors.nombre ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.nombre)}
               />
+              {errors.nombre ? (
+                <p className="text-xs text-red-600">{errors.nombre}</p>
+              ) : null}
             </div>
             <div className="space-y-2 text-sm">
               <label className={labelClass} htmlFor="email">
@@ -508,8 +632,12 @@ export function CustomFurniturePage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className={fieldClass}
+                className={`${fieldClass} ${errors.email ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+                aria-invalid={Boolean(errors.email)}
               />
+              {errors.email ? (
+                <p className="text-xs text-red-600">{errors.email}</p>
+              ) : null}
             </div>
           </div>
 
@@ -525,13 +653,21 @@ export function CustomFurniturePage() {
               value={formData.descripcion}
               onChange={handleChange}
               placeholder="Ej: Escritorio para home office en living, espacio reducido, necesito cajones y pasacables..."
-              className={fieldClass}
+              className={`${fieldClass} ${errors.descripcion ? 'border-red-400 ring-2 ring-red-200' : ''}`}
+              aria-invalid={Boolean(errors.descripcion)}
             />
+            {errors.descripcion ? (
+              <p className="text-xs text-red-600">{errors.descripcion}</p>
+            ) : null}
             <p className="text-xs text-neutral-500">
               Si tenés referencias (links, Instagram, Pinterest) podés pegarlas
               acá también.
             </p>
           </div>
+
+          <p className="text-xs text-neutral-500">
+            Para cotizar más rápido, enviá por WhatsApp medidas aproximadas y una foto de referencia.
+          </p>
 
           <button
             type="button"
