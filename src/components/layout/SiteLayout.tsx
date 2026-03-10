@@ -385,7 +385,7 @@ export function SiteLayout({ children }: LayoutProps) {
                 Taller y entregas
               </h3>
               <p className="mt-3 text-sm text-neutral-300">
-                Atendemos mayoristas B2B y clientes finales B2C en CABA y Zona Norte.
+                Atendemos locales, estudios y clientes finales en CABA y Zona Norte.
               </p>
               <div className="mt-3 rounded-md overflow-hidden border border-madera/30 shadow-madera h-40 transition-shadow">
                 <iframe

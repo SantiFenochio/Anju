@@ -104,7 +104,7 @@ export function HomePage() {
                   Diseño y fabricación propia
                 </span>
                 <span className="inline-flex items-center rounded-full border border-madera/20 bg-white/90 px-3.5 py-1.5 text-[11px] font-semibold text-madera">
-                  Proyectos B2B y clientes finales
+                  Locales, estudios y clientes finales
                 </span>
               </div>
               <div className="mt-8 flex flex-wrap gap-3.5">
@@ -146,7 +146,7 @@ export function HomePage() {
                   <p className="mt-1">roble, pino y cedro seleccionados</p>
                 </div>
                 <div className="rounded-2xl border border-madera/15 bg-white/90 px-4 py-4 shadow-[0_12px_28px_rgba(139,90,43,0.08)] min-h-[122px]">
-                  <p className="text-lg font-semibold text-neutral-900">B2B y B2C</p>
+                  <p className="text-lg font-semibold text-neutral-900">Locales y clientes finales</p>
                   <p className="mt-1">atención a locales, estudios y clientes finales</p>
                 </div>
               </div>
@@ -253,7 +253,7 @@ export function HomePage() {
             Confían en nosotros
           </p>
           <h2 className="heading-h2 tracking-[-0.01em]">
-            Clientes B2B y B2C que eligen ANJU
+            Locales, estudios y clientes finales que eligen ANJU
           </h2>
           <p className="text-[1.02rem] text-neutral-700 max-w-2xl leading-relaxed">
             Marcas, estudios y locales que nos confían mobiliario para uso intensivo

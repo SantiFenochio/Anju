@@ -4,7 +4,7 @@ const testimonials = [
   {
     name: 'Estudio de Arquitectura Palermo',
     text: 'Trabajamos varios proyectos de oficinas y locales con ANJU. Siempre cumplen con las medidas y terminaciones que necesitamos para nuestros clientes.',
-    type: 'B2B',
+    type: 'Estudios y locales',
   },
   {
     name: 'Mariana · Belgrano',
