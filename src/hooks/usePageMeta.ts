@@ -11,11 +11,7 @@ export function usePageMeta({ title, description, keywords }: PageMetaOptions) {
     if (typeof document === 'undefined') return
 
     const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '')
-    const currentOrigin =
-      typeof window !== 'undefined' && window.location.origin
-        ? window.location.origin
-        : ''
-    const baseUrl = siteUrl || currentOrigin || 'https://anju.com.ar'
+    const baseUrl = siteUrl || 'https://anju.com.ar'
     const canonicalUrl =
       typeof window !== 'undefined'
         ? `${baseUrl}${window.location.pathname}`
