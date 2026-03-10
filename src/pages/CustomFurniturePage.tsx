@@ -285,7 +285,7 @@ export function CustomFurniturePage() {
   const labelClass = 'block text-sm font-semibold text-neutral-900'
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 sm:py-12 space-y-7">
+    <div className="page-shell max-w-4xl">
       <nav aria-label="Breadcrumb" className="text-xs text-madera/70">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
@@ -301,7 +301,7 @@ export function CustomFurniturePage() {
         </ol>
       </nav>
       <section className="space-y-3">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-neutral-900">
+        <h1 className="heading-h1">
           Muebles a medida
         </h1>
         <p className="text-base text-neutral-700">
@@ -310,12 +310,12 @@ export function CustomFurniturePage() {
         </p>
       </section>
 
-      <section className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-7 shadow-madera scroll-fade opacity-0 transition-all duration-300">
+      <section className="rounded-3xl border border-madera/10 bg-white section-card space-y-7 shadow-madera scroll-fade opacity-0 transition-all duration-300">
         <div className="space-y-2.5">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-oliva">
             Configurador rápido
           </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+          <h2 className="heading-h2">
             Definí tu mueble ideal
           </h2>
           <p className="text-base text-neutral-700 max-w-2xl">
@@ -429,7 +429,7 @@ export function CustomFurniturePage() {
               ) : null}
             </div>
           </div>
-          <div className="rounded-2xl border border-madera/15 bg-crema/60 p-5 sm:p-6 space-y-4 shadow-sm transition-all duration-300">
+          <div className="rounded-2xl border border-madera/15 bg-crema/60 card-pad space-y-4 shadow-sm transition-all duration-300">
             <div className="rounded-2xl overflow-hidden border border-madera/10 bg-white">
               <img
                 src={previewConfigImage}
@@ -441,7 +441,7 @@ export function CustomFurniturePage() {
             <button
               type="button"
               onClick={handleContinueWithDesign}
-              className="w-full rounded-full bg-madera text-white text-sm font-semibold px-4 py-3.5 shadow-md hover:bg-madera/90 transition-all duration-200 hover:-translate-y-0.5"
+              className="btn-primary w-full px-4 py-3.5"
             >
               Continuar con este diseño
             </button>
@@ -452,7 +452,7 @@ export function CustomFurniturePage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-madera/10 bg-crema/60 p-4 sm:p-5 space-y-2.5 shadow-sm">
+      <section className="rounded-2xl border border-madera/10 bg-crema/60 card-pad space-y-2.5 shadow-sm">
         <p className="text-xs font-semibold tracking-[0.18em] uppercase text-oliva">
           Antes de enviar
         </p>
@@ -463,7 +463,7 @@ export function CustomFurniturePage() {
       </section>
 
       {isLoading ? (
-        <div className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 space-y-4">
+        <div className="rounded-3xl border border-madera/10 bg-white section-card space-y-4">
           <div className="h-48 rounded-2xl skeleton-shimmer animate-shimmer bg-crema/60" />
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
@@ -502,7 +502,7 @@ export function CustomFurniturePage() {
       ) : (
         <form
           onSubmit={(event) => event.preventDefault()}
-          className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-7 shadow-madera scroll-fade opacity-0"
+          className="rounded-3xl border border-madera/10 bg-white section-card space-y-7 shadow-madera scroll-fade opacity-0"
         >
           {submitError ? (
             <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -720,7 +720,7 @@ export function CustomFurniturePage() {
             type="button"
             onClick={handleSubmitRequest}
             aria-label="Enviar solicitud"
-            className="w-full inline-flex items-center justify-center rounded-full bg-madera text-white text-base font-semibold px-6 py-4 shadow-[0_14px_30px_rgba(139,90,43,0.28)] hover:bg-madera/90 transition-all duration-200 hover:-translate-y-0.5"
+            className="btn-primary w-full text-base px-6 py-4 shadow-[0_14px_30px_rgba(139,90,43,0.28)]"
           >
             Enviar pedido por WhatsApp
           </button>

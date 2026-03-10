@@ -52,10 +52,10 @@ export function CartPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 space-y-6">
+    <div className="page-shell max-w-4xl">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+          <h1 className="heading-h1">
             Tu selección
           </h1>
           <p className="mt-1 text-sm text-neutral-700">
@@ -66,7 +66,7 @@ export function CartPage() {
         </div>
         <Link
           to="/catalogo"
-          className="hidden sm:inline-flex items-center justify-center rounded-full border border-oliva/40 text-oliva text-xs font-medium px-4 py-2 bg-white hover:bg-crema/80 transition-colors"
+          className="btn-secondary hidden sm:inline-flex text-xs"
         >
           Seguir en catálogo
         </Link>
@@ -77,7 +77,7 @@ export function CartPage() {
           <p>Tu carrito está vacío.</p>
           <Link
             to="/catalogo"
-            className="mt-3 inline-flex items-center justify-center rounded-full bg-madera text-white text-xs font-medium px-4 py-2 hover:bg-madera/90 transition-colors"
+            className="btn-primary mt-3 text-xs"
           >
             Ver catálogo
           </Link>
@@ -88,7 +88,7 @@ export function CartPage() {
             {items.map((item) => (
               <div
                 key={`${item.product.id}-${item.quantity}`}
-                className="rounded-2xl border border-madera/10 bg-white p-4 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(139,90,43,0.12)] transition-transform transition-shadow shadow-madera scroll-fade opacity-0 cart-item-pop"
+                className="rounded-2xl border border-madera/10 bg-white card-pad flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(139,90,43,0.12)] transition-transform transition-shadow shadow-madera scroll-fade opacity-0 cart-item-pop"
               >
                 <div className="h-16 w-16 rounded-xl bg-crema flex items-center justify-center text-xs text-neutral-600">
                   {item.product.category === 'escritorio' && 'Escritorio'}
@@ -106,8 +106,8 @@ export function CartPage() {
               </div>
             ))}
           </div>
-          <aside className="rounded-2xl border border-madera/10 bg-white p-5 h-max sticky top-24 shadow-madera scroll-fade opacity-0">
-            <h2 className="text-sm font-semibold text-neutral-900">
+          <aside className="rounded-2xl border border-madera/10 bg-white card-pad h-max sticky top-24 shadow-madera scroll-fade opacity-0">
+            <h2 className="heading-h3">
               Resumen del pedido
             </h2>
             <div className="mt-4 space-y-3">
@@ -142,7 +142,7 @@ export function CartPage() {
               aria-label="Enviar pedido por WhatsApp"
               onClick={handleSendByWhatsApp}
               disabled={!items.length}
-              className="mt-5 w-full inline-flex items-center justify-center rounded-full bg-madera text-white text-base font-semibold px-5 py-3 hover:bg-madera/90 disabled:bg-neutral-300 disabled:text-neutral-600 transition-colors"
+              className="btn-primary mt-5 w-full text-base disabled:bg-neutral-300 disabled:text-neutral-600 disabled:shadow-none"
             >
               Enviar pedido por WhatsApp
             </button>
@@ -150,7 +150,7 @@ export function CartPage() {
               type="button"
               aria-label="Seguir en catálogo"
               onClick={() => navigate('/catalogo')}
-              className="mt-2 w-full inline-flex items-center justify-center rounded-full border border-oliva/40 text-oliva text-xs font-medium px-4 py-2 bg-white hover:bg-crema/80 transition-colors"
+              className="btn-secondary mt-2 w-full text-xs"
             >
               Seguir en catálogo
             </button>

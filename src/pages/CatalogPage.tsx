@@ -196,7 +196,7 @@ export function CatalogPage() {
   const quickImages = quickProduct ? getImagesForProduct(quickProduct) : []
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12 space-y-7">
+    <div className="page-shell">
       <nav aria-label="Breadcrumb" className="text-xs text-madera/70">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
@@ -226,7 +226,7 @@ export function CatalogPage() {
       </nav>
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-neutral-900">
+          <h1 className="heading-h1">
             Catálogo de muebles ANJU
           </h1>
           <p className="mt-2 text-base text-neutral-700 max-w-2xl">
@@ -236,7 +236,7 @@ export function CatalogPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 bg-white rounded-2xl shadow-madera border border-madera/10 p-5 sm:p-6 scroll-fade animate-fade-in">
+      <div className="grid gap-4 sm:grid-cols-2 bg-white rounded-2xl shadow-madera border border-madera/10 card-pad scroll-fade animate-fade-in">
         <div className="space-y-2">
           <p className="text-xs font-semibold tracking-wide text-neutral-700">Tipo de mueble</p>
           <select
@@ -402,8 +402,8 @@ export function CatalogPage() {
                     </div>
                   </div>
                 </div>
-                <div className="p-5 flex flex-col gap-3 flex-1 min-h-[270px]">
-                  <h2 className="text-base font-semibold text-neutral-900">
+                <div className="card-pad flex flex-col gap-3 flex-1 min-h-[270px]">
+                  <h2 className="heading-h3">
                     {product.name}
                   </h2>
                   <p className="min-h-[64px] text-sm text-neutral-600">
@@ -436,7 +436,7 @@ export function CatalogPage() {
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Consultar por WhatsApp"
-                      className="inline-flex items-center justify-center rounded-full bg-oliva text-white text-sm font-semibold px-4 py-2.5 shadow-md hover:bg-oliva/90 transition-all duration-200 hover:scale-[1.01]"
+                      className="btn-primary bg-oliva px-4 py-2.5 hover:bg-oliva/90"
                     >
                       Consultar por WhatsApp
                     </a>
@@ -445,7 +445,7 @@ export function CatalogPage() {
                         type="button"
                         aria-label={`Solicitar a medida para ${product.name}`}
                         onClick={() => openBudgetRequestModal(product)}
-                        className="inline-flex items-center justify-center rounded-full border border-oliva/40 text-oliva text-xs font-semibold px-3 py-2.5 bg-white hover:bg-crema/80 transition-all duration-200 hover:scale-[1.01]"
+                        className="btn-secondary border-oliva/40 text-oliva text-xs px-3 py-2.5"
                       >
                         Solicitar a medida
                       </button>
@@ -456,7 +456,7 @@ export function CatalogPage() {
                           setActiveImageIndex(0)
                           setQuickProduct(product)
                         }}
-                        className="inline-flex items-center justify-center rounded-full border border-madera/25 text-madera text-xs font-semibold px-3 py-2.5 bg-white hover:bg-crema/80 transition-all duration-200 hover:scale-[1.01]"
+                        className="btn-secondary border-madera/25 text-madera text-xs px-3 py-2.5"
                       >
                         Ver rápido
                       </button>
@@ -569,7 +569,7 @@ export function CatalogPage() {
                     type="button"
                     aria-label={`Solicitar a medida para ${quickProduct.name}`}
                     onClick={() => openBudgetRequestModal(quickProduct)}
-                    className="inline-flex items-center justify-center rounded-full bg-oliva text-white text-sm font-semibold px-5 py-3 hover:bg-oliva/90 transition-colors shadow-md"
+                    className="btn-primary bg-oliva hover:bg-oliva/90"
                   >
                     Solicitar a medida
                   </button>
@@ -580,7 +580,7 @@ export function CatalogPage() {
                       if (!quickProduct) return
                       handleAddToCart(quickProduct, e)
                     }}
-                    className="relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-full border border-madera/30 text-madera text-xs font-medium px-4 py-2.5 bg-white hover:bg-crema/80 transition-colors"
+                    className="relative overflow-hidden btn-secondary gap-2 border-madera/30 text-madera text-xs px-4 py-2.5"
                   >
                     {quickProduct && justAddedId === quickProduct.id ? (
                       <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">

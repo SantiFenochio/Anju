@@ -59,9 +59,9 @@ export function ContactPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
+    <div className="page-shell">
       <header className="space-y-2 max-w-2xl">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+        <h1 className="heading-h1">
           Contacto
         </h1>
         <p className="text-sm text-neutral-700">
@@ -72,7 +72,7 @@ export function ContactPage() {
 
       <div className="grid gap-8 md:grid-cols-[3fr,2fr] items-start">
         {isLoading ? (
-          <div className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 space-y-4">
+          <div className="rounded-3xl border border-madera/10 bg-white card-pad space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <div className="h-3 w-32 rounded-full skeleton-shimmer animate-shimmer bg-crema/60" />
@@ -102,7 +102,7 @@ export function ContactPage() {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 space-y-4 shadow-madera scroll-fade opacity-0"
+            className="rounded-3xl border border-madera/10 bg-white card-pad space-y-4 shadow-madera scroll-fade opacity-0"
           >
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5 text-sm">
@@ -188,7 +188,7 @@ export function ContactPage() {
               type="submit"
               aria-label="Enviar mensaje de contacto"
               disabled={isSubmitting}
-              className="mt-2 inline-flex items-center justify-center rounded-full bg-madera text-white text-sm font-medium px-5 py-2.5 hover:bg-madera/90 disabled:bg-neutral-400 disabled:text-neutral-700 transition-colors"
+              className="btn-primary mt-2 disabled:bg-neutral-400 disabled:text-neutral-700 disabled:shadow-none"
             >
               Enviar mensaje
             </button>
@@ -196,8 +196,8 @@ export function ContactPage() {
         )}
 
         <aside className="space-y-4">
-          <div className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-6 space-y-2 shadow-madera scroll-fade opacity-0">
-            <h2 className="text-sm font-semibold text-neutral-900">
+          <div className="rounded-3xl border border-madera/10 bg-white card-pad space-y-2 shadow-madera scroll-fade opacity-0">
+            <h2 className="heading-h3">
               Taller y entregas
             </h2>
             <p className="text-sm text-neutral-700">

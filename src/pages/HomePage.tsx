@@ -90,7 +90,7 @@ export function HomePage() {
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-oliva mb-3.5">
                 Carpintería familiar · Buenos Aires
               </p>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-neutral-900 leading-[1.08]">
+              <h1 className="heading-h1">
                 Muebles de madera para hogares, locales y proyectos a medida
               </h1>
               <p className="mt-5 text-base text-neutral-700 max-w-xl leading-relaxed">
@@ -110,13 +110,13 @@ export function HomePage() {
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link
                   to="/catalogo"
-                  className="inline-flex items-center justify-center px-5 py-3 rounded-full bg-madera text-white text-sm font-semibold shadow-md hover:shadow-lg hover:bg-madera/90 hover:-translate-y-0.5 transition-all"
+                  className="btn-primary px-5 py-3"
                 >
                   Ver catálogo de muebles
                 </Link>
                 <Link
                   to="/muebles-a-medida"
-                  className="inline-flex items-center justify-center px-5 py-3 rounded-full border border-madera/30 text-madera text-sm font-semibold bg-white/85 shadow-md hover:shadow-lg hover:bg-crema/80 hover:-translate-y-0.5 transition-all"
+                  className="btn-secondary px-5 py-3 bg-white/85 shadow-md hover:shadow-lg"
                 >
                   Solicitar mueble a medida
                 </Link>
@@ -211,7 +211,7 @@ export function HomePage() {
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-oliva">
               Línea de tiempo
             </p>
-            <h2 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+            <h2 className="heading-h2">
               Hitos profesionales desde 1990
             </h2>
             <p className="text-base text-neutral-700 max-w-2xl">
@@ -249,7 +249,7 @@ export function HomePage() {
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-oliva">
             Confían en nosotros
           </p>
-          <h2 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+          <h2 className="heading-h2">
             Clientes B2B y B2C que eligen ANJU
           </h2>
           <p className="text-base text-neutral-700 max-w-2xl">
@@ -261,7 +261,7 @@ export function HomePage() {
           {TRUSTED_LOGOS.map((logo) => (
             <div
               key={logo}
-              className="group rounded-2xl border border-madera/10 bg-white shadow-sm px-4 py-6 min-h-[92px] flex items-center justify-center text-center text-xs sm:text-sm font-semibold text-neutral-500 tracking-wide uppercase transition-all scroll-fade opacity-0 hover:border-oliva/30 hover:text-neutral-700 hover:shadow-md"
+              className="group rounded-2xl border border-madera/10 bg-white shadow-sm card-pad min-h-[92px] flex items-center justify-center text-center text-xs sm:text-sm font-semibold text-neutral-500 tracking-wide uppercase transition-all scroll-fade opacity-0 hover:border-oliva/30 hover:text-neutral-700 hover:shadow-md"
             >
               {logo}
             </div>
@@ -272,7 +272,7 @@ export function HomePage() {
       <section className="max-w-6xl mx-auto px-4 py-12 sm:py-14 space-y-8">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+            <h2 className="heading-h2">
               Muebles pensados para uso diario intenso
             </h2>
             <p className="mt-2 text-base text-neutral-700 max-w-2xl">
@@ -284,7 +284,7 @@ export function HomePage() {
           <button
             type="button"
             onClick={() => openBudgetRequestModal()}
-            className="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-oliva/40 text-oliva text-xs sm:text-sm font-medium bg-white hover:bg-crema/80 transition-all hover:-translate-y-0.5"
+            className="btn-secondary px-4 py-2.5 text-xs sm:text-sm"
           >
             Presupuesto gratis
           </button>
@@ -306,8 +306,8 @@ export function HomePage() {
               }}
               aria-hidden="true"
             />
-            <div className="p-5 min-h-[120px]">
-              <h3 className="text-sm font-semibold text-neutral-900">
+            <div className="card-pad min-h-[120px]">
+              <h3 className="heading-h3">
                 Escritorios ejecutivos
               </h3>
               <p className="mt-1.5 text-sm text-neutral-700">
@@ -332,8 +332,8 @@ export function HomePage() {
               }}
               aria-hidden="true"
             />
-            <div className="p-5 min-h-[120px]">
-              <h3 className="text-sm font-semibold text-neutral-900">
+            <div className="card-pad min-h-[120px]">
+              <h3 className="heading-h3">
                 Mesas y livings
               </h3>
               <p className="mt-1.5 text-sm text-neutral-700">
@@ -358,8 +358,8 @@ export function HomePage() {
               }}
               aria-hidden="true"
             />
-            <div className="p-5 min-h-[120px]">
-              <h3 className="text-sm font-semibold text-neutral-900">
+            <div className="card-pad min-h-[120px]">
+              <h3 className="heading-h3">
                 Piezas decorativas
               </h3>
               <p className="mt-1.5 text-sm text-neutral-700">

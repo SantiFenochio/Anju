@@ -98,7 +98,7 @@ export function GalleryPage() {
   )
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 sm:py-12 space-y-9">
+    <div className="page-shell">
       <nav aria-label="Breadcrumb" className="text-xs text-madera/70">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
@@ -113,12 +113,12 @@ export function GalleryPage() {
           <li className="text-madera">Galería</li>
         </ol>
       </nav>
-      <section className="rounded-3xl border border-madera/10 bg-white p-5 sm:p-7 md:p-8 space-y-4 shadow-madera">
+      <section className="rounded-3xl border border-madera/10 bg-white section-card space-y-4 shadow-madera">
         <div className="max-w-3xl space-y-3">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-oliva">
             Galería ANJU
           </p>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-neutral-900">
+          <h1 className="heading-h1">
             Taller y muebles instalados en uso real
           </h1>
           <p className="text-base text-neutral-700">
@@ -143,7 +143,7 @@ export function GalleryPage() {
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-3">
           <div className="space-y-1.5">
-            <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">
+            <h2 className="heading-h2">
               Proceso en taller
             </h2>
             <p className="text-sm text-neutral-700">
@@ -175,7 +175,7 @@ export function GalleryPage() {
                   aria-hidden="true"
                 />
               </div>
-              <figcaption className="p-4 min-h-[86px] flex items-start justify-between gap-2 border-t border-madera/5">
+              <figcaption className="card-pad min-h-[86px] flex items-start justify-between gap-2 border-t border-madera/5">
                 <span className="text-sm text-neutral-800">{item.label}</span>
                 <span className="shrink-0 text-[10px] uppercase tracking-wide px-2.5 py-1 rounded-full bg-madera/10 text-madera">
                   taller
@@ -189,7 +189,7 @@ export function GalleryPage() {
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-3">
           <div className="space-y-1.5">
-            <h2 className="text-xl sm:text-2xl font-semibold text-neutral-900">
+            <h2 className="heading-h2">
               Proyectos terminados
             </h2>
             <p className="text-sm text-neutral-700">
@@ -221,7 +221,7 @@ export function GalleryPage() {
                   aria-hidden="true"
                 />
               </div>
-              <figcaption className="p-4 min-h-[86px] flex items-start justify-between gap-2 border-t border-madera/5">
+              <figcaption className="card-pad min-h-[86px] flex items-start justify-between gap-2 border-t border-madera/5">
                 <span className="text-sm text-neutral-800">{item.label}</span>
                 <span className="shrink-0 text-[10px] uppercase tracking-wide px-2.5 py-1 rounded-full bg-oliva/10 text-oliva">
                   producto

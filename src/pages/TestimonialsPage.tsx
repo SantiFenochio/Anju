@@ -28,9 +28,9 @@ export function TestimonialsPage() {
   })
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 space-y-6">
+    <div className="page-shell max-w-5xl">
       <header className="space-y-2 max-w-2xl">
-        <h1 className="text-2xl sm:text-3xl font-semibold text-neutral-900">
+        <h1 className="heading-h1">
           Testimonios de clientes
         </h1>
         <p className="text-sm text-neutral-700">
@@ -43,7 +43,7 @@ export function TestimonialsPage() {
         {testimonials.map((item) => (
           <article
             key={item.name}
-            className="rounded-2xl bg-white border border-madera/10 p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all flex flex-col gap-3"
+            className="rounded-2xl bg-white border border-madera/10 card-pad shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all flex flex-col gap-3"
           >
             <p className="text-xs uppercase tracking-wide text-oliva">
               {item.type}
