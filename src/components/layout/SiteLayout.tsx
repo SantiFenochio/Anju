@@ -257,7 +257,7 @@ export function SiteLayout({ children }: LayoutProps) {
         </div>
         <div
           id="mobile-menu"
-          className={`md:hidden ${isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'} transition-all duration-200 bg-white border-b border-madera/10`}
+          className={`md:hidden overflow-hidden transition-[max-height,opacity,transform,border-color] duration-200 bg-white ${isMobileMenuOpen ? 'max-h-[26rem] opacity-100 translate-y-0 border-b border-madera/10' : 'max-h-0 opacity-0 -translate-y-2 border-b border-transparent pointer-events-none'}`}
         >
           <div className="max-w-6xl mx-auto px-4 py-4 grid gap-4">
             <div className="flex items-center gap-2">
