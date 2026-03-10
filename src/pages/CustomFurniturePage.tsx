@@ -5,11 +5,11 @@ import { usePageMeta } from '../hooks/usePageMeta'
 
 export function CustomFurniturePage() {
   usePageMeta({
-    title: 'Muebles a medida en Buenos Aires · ANJU Carpintería',
+    title: 'Muebles y placares a medida en Villa Ballester · ANJU Carpintería',
     description:
-      'Pedí muebles de madera a medida con ANJU Carpintería en Buenos Aires. Completá el formulario y recibí un presupuesto personalizado para tu proyecto.',
+      'Solicitá muebles y placares a medida con ANJU Carpintería en Villa Ballester, Buenos Aires. Diseñamos proyectos personalizados para CABA y Zona Norte.',
     keywords:
-      'muebles a medida Buenos Aires, presupuesto carpintería ANJU, muebles personalizados CABA',
+      'placares a medida zona norte, muebles a medida Villa Ballester, carpintería a medida Buenos Aires, presupuesto muebles de madera',
   })
   const [isLoading, setIsLoading] = useState(true)
 
@@ -302,7 +302,7 @@ export function CustomFurniturePage() {
       </nav>
       <section className="space-y-3">
         <h1 className="heading-h1">
-          Muebles a medida
+          Muebles y placares a medida en Buenos Aires
         </h1>
         <p className="text-base text-neutral-700">
           Contanos qué necesitás y preparamos un diseño y presupuesto a medida
@@ -433,7 +433,7 @@ export function CustomFurniturePage() {
             <div className="rounded-2xl overflow-hidden border border-madera/10 bg-white">
               <img
                 src={previewConfigImage}
-                alt={`Preview ${config.type} en ${materialConfig[config.material as keyof typeof materialConfig]?.name}`}
+                alt={`Vista previa de ${config.type} a medida en ${materialConfig[config.material as keyof typeof materialConfig]?.name}`}
                 className="w-full h-44 sm:h-48 object-cover"
                 loading="lazy"
               />
@@ -512,7 +512,7 @@ export function CustomFurniturePage() {
           <div className="rounded-2xl overflow-hidden border border-madera/10 bg-neutral-100">
             <img
               src={previewImg}
-              alt={`Preview del mueble con material ${formData.madera}`}
+              alt={`Vista previa del mueble a medida en ${formData.madera || 'madera seleccionada'}`}
               className="w-full h-40 sm:h-56 object-cover"
               loading="lazy"
             />

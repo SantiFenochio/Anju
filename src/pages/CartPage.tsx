@@ -5,11 +5,11 @@ import { useCart } from '../contexts/CartContext'
 
 export function CartPage() {
   usePageMeta({
-    title: 'Carrito de pedido · ANJU Carpintería Buenos Aires',
+    title: 'Carrito de pedido de muebles a medida · ANJU Buenos Aires',
     description:
-      'Revisá tu carrito de muebles de madera ANJU y enviá tu pedido por WhatsApp. Entregas coordinadas en CABA y Zona Norte.',
+      'Revisá tu carrito de muebles de madera ANJU y enviá tu consulta por WhatsApp. Coordinamos entregas desde Villa Ballester a CABA y Zona Norte.',
     keywords:
-      'carrito muebles de madera, pedido muebles a medida Buenos Aires, carrito ANJU',
+      'pedido muebles a medida Buenos Aires, carrito carpintería ANJU, muebles de madera zona norte',
   })
   const { items, totalItems } = useCart()
   const navigate = useNavigate()
@@ -56,7 +56,7 @@ export function CartPage() {
       <div className="flex items-center justify-between gap-3">
         <div>
           <h1 className="heading-h1">
-            Tu selección
+            Tu pedido de muebles a medida
           </h1>
           <p className="mt-1 text-sm text-neutral-700">
             {totalItems === 0

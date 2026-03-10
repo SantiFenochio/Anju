@@ -5,11 +5,11 @@ import { usePageMeta } from '../hooks/usePageMeta'
 
 export function ContactPage() {
   usePageMeta({
-    title: 'Contacto · ANJU Carpintería Buenos Aires',
+    title: 'Contacto carpintería en Villa Ballester · ANJU Buenos Aires',
     description:
-      'Contactá a ANJU Carpintería para pedidos de muebles a medida, presupuestos y proyectos especiales en Buenos Aires.',
+      'Contactá a ANJU Carpintería en Villa Ballester para muebles de madera y placares a medida en Buenos Aires, CABA y Zona Norte.',
     keywords:
-      'contacto carpintería ANJU, muebles a medida contacto Buenos Aires, carpintería zona norte contacto',
+      'contacto carpintería Villa Ballester, presupuesto muebles a medida Buenos Aires, contacto placares zona norte',
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -62,7 +62,7 @@ export function ContactPage() {
     <div className="page-shell">
       <header className="space-y-2 max-w-2xl">
         <h1 className="heading-h1">
-          Contacto
+          Contacto de carpintería a medida en Villa Ballester
         </h1>
         <p className="text-sm text-neutral-700">
           Escribinos para coordinar un proyecto a medida, pedir presupuesto

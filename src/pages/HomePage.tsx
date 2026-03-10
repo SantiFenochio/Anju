@@ -52,11 +52,11 @@ const TRUSTED_LOGOS = [
 
 export function HomePage() {
   usePageMeta({
-    title: 'ANJU Carpintería · Muebles a medida en Buenos Aires',
+    title: 'Carpintería a medida en Villa Ballester, Buenos Aires · ANJU Carpintería',
     description:
-      'Muebles de madera maciza a medida en Buenos Aires. Carpintería ANJU diseña y fabrica muebles para hogares, oficinas y locales en CABA y Zona Norte.',
+      'ANJU Carpintería en Villa Ballester diseña y fabrica muebles de madera y placares a medida para hogares, oficinas y locales en Buenos Aires, CABA y Zona Norte.',
     keywords:
-      'muebles a medida Buenos Aires, carpintería ANJU, muebles de madera CABA, muebles a medida zona norte',
+      'carpintería a medida Villa Ballester, muebles de madera Buenos Aires, placares a medida zona norte, muebles a medida CABA',
   })
   const dustParticles = DUST_PARTICLES
   const heroImage = `${import.meta.env.BASE_URL}anju-hero.jpg`
@@ -91,7 +91,7 @@ export function HomePage() {
                 Carpintería familiar · Buenos Aires
               </p>
               <h1 className="heading-h1">
-                Muebles de madera para hogares, locales y proyectos a medida
+                Carpintería a medida en Villa Ballester para muebles de madera durables
               </h1>
               <p className="mt-5 text-base text-neutral-700 max-w-xl leading-relaxed">
                 Diseñamos y construimos muebles a medida y colecciones estándar en
@@ -157,7 +157,7 @@ export function HomePage() {
             <div className="relative w-full max-w-lg md:max-w-xl lg:max-w-2xl aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_24px_56px_rgba(139,90,43,0.2)] border border-madera/20 transform-gpu transition-transform bg-[linear-gradient(135deg,#8B5A2B,#F5F0E8)]">
               <img
                 src={heroImage}
-                alt="Mueble de madera clara con puerta de rattan en dormitorio"
+                alt="Mueble a medida de madera en dormitorio fabricado por carpintería en Villa Ballester"
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover object-center sm:object-[center_42%] scale-[1.04] opacity-95"
               />
@@ -293,7 +293,7 @@ export function HomePage() {
           <div className="relative group rounded-2xl bg-white shadow-madera border border-madera/10 overflow-hidden transform-gpu transition-transform hover:scale-[1.02] scroll-fade opacity-0">
             <img
               src="https://images.pexels.com/photos/374870/pexels-photo-374870.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="Escritorio de madera en oficina luminosa"
+              alt="Escritorio de madera a medida para oficina en Buenos Aires"
               loading="lazy"
               className="h-40 w-full object-cover"
             />
@@ -319,7 +319,7 @@ export function HomePage() {
           <div className="relative group rounded-2xl bg-white shadow-madera border border-madera/10 overflow-hidden transform-gpu transition-transform hover:scale-[1.02] scroll-fade opacity-0">
             <img
               src="https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="Mesa de comedor de madera en hogar"
+              alt="Mesa de comedor de madera maciza hecha a medida en Zona Norte"
               loading="lazy"
               className="h-40 w-full object-cover"
             />
@@ -345,7 +345,7 @@ export function HomePage() {
           <div className="relative group rounded-2xl bg-white shadow-madera border border-madera/10 overflow-hidden transform-gpu transition-transform hover:scale-[1.02] scroll-fade opacity-0">
             <img
               src="https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="Mueble de madera en living hogareño"
+              alt="Mueble de madera para living fabricado por carpintería de Buenos Aires"
               loading="lazy"
               className="h-40 w-full object-cover"
             />

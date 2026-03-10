@@ -13,6 +13,10 @@ type LayoutProps = {
 const searchImagePlaceholder =
   'https://images.pexels.com/photos/3735410/pexels-photo-3735410.jpeg?auto=compress&cs=tinysrgb&w=400'
 
+function getSearchImage(product: Product) {
+  return product.images[0] ?? searchImagePlaceholder
+}
+
 export function SiteLayout({ children }: LayoutProps) {
   const navigate = useNavigate()
   const location = useLocation()
@@ -88,7 +92,7 @@ export function SiteLayout({ children }: LayoutProps) {
           >
             <img
               src="/anju-logo.svg"
-              alt="Logo ANJU"
+              alt="Logo ANJU Carpintería en Villa Ballester, Buenos Aires"
               className="h-9 w-9 object-contain"
               loading="lazy"
             />
@@ -138,8 +142,8 @@ export function SiteLayout({ children }: LayoutProps) {
                         >
                           <div className="h-10 w-10 rounded-md bg-neutral-100 overflow-hidden flex-shrink-0">
                             <img
-                              src={searchImagePlaceholder}
-                              alt={product.name}
+                              src={getSearchImage(product)}
+                              alt={`${product.name} de ANJU Carpintería`}
                               className="w-full h-full object-cover"
                               loading="lazy"
                             />
@@ -311,7 +315,7 @@ export function SiteLayout({ children }: LayoutProps) {
             <div>
               <img
                 src="/anju-logo.svg"
-                alt="Logo ANJU"
+                alt="Logo ANJU Carpintería en Villa Ballester, Buenos Aires"
                 className="h-8 w-8 object-contain mb-3"
                 loading="lazy"
               />
@@ -484,8 +488,8 @@ export function SiteLayout({ children }: LayoutProps) {
                         >
                           <div className="h-11 w-11 rounded-md bg-neutral-100 overflow-hidden flex-shrink-0">
                             <img
-                              src={searchImagePlaceholder}
-                              alt={product.name}
+                              src={getSearchImage(product)}
+                              alt={`${product.name} de ANJU Carpintería`}
                               className="w-full h-full object-cover"
                               loading="lazy"
                             />

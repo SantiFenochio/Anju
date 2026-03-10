@@ -15,57 +15,29 @@ type Filters = {
   material: ProductMaterial | 'todos'
 }
 
-const productImages: Record<string, string[]> = {
-  'table-night-toledo-roble-1': [
-    '/Mueble1.jpg',
-    'https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/276583/pexels-photo-276583.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
-  'table-floor-moderna-roble-1': [
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.40.49.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.35%20%281%29.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.35%20%282%29.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.35%20%283%29.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.35%20%284%29.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.35%20%285%29.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.35.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.36%20%281%29.jpeg',
-    '/Mesa2/WhatsApp%20Image%202026-02-23%20at%2013.44.36.jpeg',
-  ],
-  'desk-exec-roble-1': [
-    'https://images.pexels.com/photos/3817391/pexels-photo-3817391.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3735410/pexels-photo-3735410.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3735412/pexels-photo-3735412.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
-  'desk-home-pino-1': [
-    'https://images.pexels.com/photos/3965551/pexels-photo-3965551.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3965529/pexels-photo-3965529.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3965528/pexels-photo-3965528.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
-  'clock-cedro-1': [
-    'https://images.pexels.com/photos/7652083/pexels-photo-7652083.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/7652065/pexels-photo-7652065.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/7652066/pexels-photo-7652066.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
-  'clock-roble-1': [
-    'https://images.pexels.com/photos/7652048/pexels-photo-7652048.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/7652012/pexels-photo-7652012.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/7652033/pexels-photo-7652033.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
-  'table-dining-roble-1': [
-    'https://images.pexels.com/photos/3965534/pexels-photo-3965534.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3965533/pexels-photo-3965533.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3965518/pexels-photo-3965518.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
-  'table-living-pino-1': [
-    'https://images.pexels.com/photos/3965552/pexels-photo-3965552.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3965505/pexels-photo-3965505.jpeg?auto=compress&cs=tinysrgb&w=800',
-    'https://images.pexels.com/photos/3965507/pexels-photo-3965507.jpeg?auto=compress&cs=tinysrgb&w=800',
-  ],
+const fallbackImage = '/Mueble1.jpg'
+
+const categoryLabels: Record<ProductCategory, string> = {
+  escritorio: 'Escritorios',
+  reloj: 'Relojes de pared',
+  mesa: 'Mesas',
+}
+
+const categoryContextLabels: Record<ProductCategory, string> = {
+  escritorio: 'Oficina y home office',
+  reloj: 'Decoración mural',
+  mesa: 'Comedor y living',
+}
+
+const materialLabels: Record<ProductMaterial, string> = {
+  roble: 'Roble',
+  pino: 'Pino',
+  cedro: 'Cedro',
 }
 
 function getImagesForProduct(product: Product) {
-  return productImages[product.id] ?? Object.values(productImages)[0]
+  if (product.images.length > 0) return product.images
+  return [fallbackImage]
 }
 
 function shadeColor(hex: string, percent: number) {
@@ -82,11 +54,11 @@ function shadeColor(hex: string, percent: number) {
 
 export function CatalogPage() {
   usePageMeta({
-    title: 'Catálogo de muebles de madera · ANJU Carpintería Buenos Aires',
+    title: 'Catálogo de muebles de madera a medida en Buenos Aires · ANJU Carpintería',
     description:
-      'Catálogo de muebles de madera maciza ANJU: escritorios, mesas y relojes a medida para hogares, oficinas y locales en CABA y Zona Norte.',
+      'Catálogo ANJU de muebles de madera a medida en Villa Ballester, Buenos Aires: escritorios, mesas, relojes y soluciones para hogares, oficinas y locales.',
     keywords:
-      'catálogo muebles madera Buenos Aires, escritorios de madera CABA, mesas de comedor a medida',
+      'muebles de madera Buenos Aires, catálogo carpintería Villa Ballester, escritorios a medida zona norte, mesas de madera CABA',
   })
   const [filters, setFilters] = useState<Filters>({
     category: 'todos',
@@ -183,17 +155,22 @@ export function CatalogPage() {
       return true
     })
   }, [filters])
+  const categoryOptions = useMemo(() => {
+    return Array.from(new Set(products.map((product) => product.category)))
+  }, [])
+  const materialOptions = useMemo(() => {
+    return Array.from(new Set(products.map((product) => product.material)))
+  }, [])
   const isSingleProduct = filteredProducts.length === 1
   const categoryLabel =
     filters.category === 'todos'
       ? null
-      : {
-          escritorio: 'Escritorios',
-          reloj: 'Relojes de pared',
-          mesa: 'Mesas',
-        }[filters.category]
+      : categoryLabels[filters.category]
 
   const quickImages = quickProduct ? getImagesForProduct(quickProduct) : []
+  const hasQuickManyImages = quickImages.length > 1
+  const quickActiveImageIndex =
+    quickImages.length > 0 ? activeImageIndex % quickImages.length : 0
 
   return (
     <div className="page-shell">
@@ -227,7 +204,7 @@ export function CatalogPage() {
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <h1 className="heading-h1">
-            Catálogo de muebles ANJU
+            Catálogo de muebles de madera a medida en Buenos Aires
           </h1>
           <p className="mt-2 text-base text-neutral-700 max-w-2xl">
             Piezas estándar en madera maciza listas para entregar o adaptar a tu proyecto. 
@@ -251,9 +228,11 @@ export function CatalogPage() {
             }
           >
             <option value="todos">Todos</option>
-            <option value="escritorio">Escritorios</option>
-            <option value="reloj">Relojes de pared</option>
-            <option value="mesa">Mesas</option>
+            {categoryOptions.map((category) => (
+              <option key={category} value={category}>
+                {categoryLabels[category]}
+              </option>
+            ))}
           </select>
         </div>
         <div className="space-y-2">
@@ -270,9 +249,11 @@ export function CatalogPage() {
             }
           >
             <option value="todos">Todas</option>
-            <option value="roble">Roble</option>
-            <option value="pino">Pino</option>
-            <option value="cedro">Cedro</option>
+            {materialOptions.map((material) => (
+              <option key={material} value={material}>
+                {materialLabels[material]}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -312,14 +293,12 @@ export function CatalogPage() {
         </div>
       ) : (
         <div
-          className={`grid gap-6 auto-rows-fr ${isSingleProduct ? 'place-items-center sm:grid-cols-1 lg:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3'}`}
+          className={`grid gap-6 auto-rows-fr ${isSingleProduct ? 'place-items-center sm:grid-cols-1 lg:grid-cols-1' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}`}
         >
           {filteredProducts.map((product) => {
             const images = getImagesForProduct(product)
-            const isToledo = product.id === 'table-night-toledo-roble-1'
-            const isModerna = product.id === 'table-floor-moderna-roble-1'
-            const isFeatured = isToledo || isModerna
-            const currentCardImageIndex = cardImageIndex[product.id] ?? 0
+            const hasManyImages = images.length > 1
+            const currentCardImageIndex = (cardImageIndex[product.id] ?? 0) % images.length
             return (
               <article
                 key={product.id}
@@ -329,43 +308,47 @@ export function CatalogPage() {
                   <div className="relative h-56">
                     <img
                       src={images[currentCardImageIndex]}
-                      alt={`${product.name} vista ${currentCardImageIndex + 1}`}
+                      alt={`${product.name} en ${product.material} - foto ${currentCardImageIndex + 1}`}
                       loading="lazy"
-                      className={`h-full w-full ${isFeatured ? 'object-contain' : 'object-cover'} bg-crema/35 transition-opacity duration-500 ease-out`}
+                      className={`h-full w-full ${hasManyImages ? 'object-cover' : 'object-contain'} bg-crema/35 transition-opacity duration-500 ease-out`}
                     />
-                    <button
-                      type="button"
-                      aria-label="Foto anterior"
-                      onClick={() =>
-                        setCardImageIndex((prev) => ({
-                          ...prev,
-                          [product.id]:
-                            (currentCardImageIndex - 1 + images.length) %
-                            images.length,
-                        }))
-                      }
-                      className="absolute left-2.5 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
-                    >
-                      <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
-                        <path d="M15.5 4.5 8 12l7.5 7.5-1.5 1.5L5 12l9-9 1.5 1.5Z" fill="currentColor" />
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Foto siguiente"
-                      onClick={() =>
-                        setCardImageIndex((prev) => ({
-                          ...prev,
-                          [product.id]:
-                            (currentCardImageIndex + 1) % images.length,
-                        }))
-                      }
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
-                    >
-                      <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
-                        <path d="M8.5 4.5 7 6l7.5 6L7 18l1.5 1.5 9-7.5-9-7.5Z" fill="currentColor" />
-                      </svg>
-                    </button>
+                    {hasManyImages && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Foto anterior"
+                          onClick={() =>
+                            setCardImageIndex((prev) => ({
+                              ...prev,
+                              [product.id]:
+                                (currentCardImageIndex - 1 + images.length) %
+                                images.length,
+                            }))
+                          }
+                          className="absolute left-2.5 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
+                        >
+                          <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
+                            <path d="M15.5 4.5 8 12l7.5 7.5-1.5 1.5L5 12l9-9 1.5 1.5Z" fill="currentColor" />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Foto siguiente"
+                          onClick={() =>
+                            setCardImageIndex((prev) => ({
+                              ...prev,
+                              [product.id]:
+                                (currentCardImageIndex + 1) % images.length,
+                            }))
+                          }
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
+                        >
+                          <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
+                            <path d="M8.5 4.5 7 6l7.5 6L7 18l1.5 1.5 9-7.5-9-7.5Z" fill="currentColor" />
+                          </svg>
+                        </button>
+                      </>
+                    )}
                     <div
                       className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity"
                       style={{
@@ -376,31 +359,33 @@ export function CatalogPage() {
                       aria-hidden="true"
                     />
                   </div>
-                  <div className="h-16 border-t border-madera/10 bg-white/90">
-                    <div className="flex h-full items-center gap-2 overflow-x-auto px-3 py-2 scroll-smooth">
-                      {images.map((src, index) => (
-                        <button
-                          key={src}
-                          type="button"
-                          onClick={() =>
-                            setCardImageIndex((prev) => ({
-                              ...prev,
-                              [product.id]: index,
-                            }))
-                          }
-                          className={`h-11 w-11 rounded-md overflow-hidden border ${index === currentCardImageIndex ? 'border-madera shadow-[0_0_0_2px_rgba(139,90,43,0.18)]' : 'border-transparent'} bg-white shadow-sm shrink-0`}
-                          aria-label={`Imagen ${index + 1} de ${product.name}`}
-                        >
-                          <img
-                            src={src}
-                            alt={`${product.name} miniatura ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                          />
-                        </button>
-                      ))}
+                  {hasManyImages && (
+                    <div className="h-16 border-t border-madera/10 bg-white/90">
+                      <div className="flex h-full items-center gap-2 overflow-x-auto px-3 py-2 scroll-smooth">
+                        {images.map((src, index) => (
+                          <button
+                            key={src}
+                            type="button"
+                            onClick={() =>
+                              setCardImageIndex((prev) => ({
+                                ...prev,
+                                [product.id]: index,
+                              }))
+                            }
+                            className={`h-11 w-11 rounded-md overflow-hidden border ${index === currentCardImageIndex ? 'border-madera shadow-[0_0_0_2px_rgba(139,90,43,0.18)]' : 'border-transparent'} bg-white shadow-sm shrink-0`}
+                            aria-label={`Imagen ${index + 1} de ${product.name}`}
+                          >
+                            <img
+                              src={src}
+                              alt={`Miniatura ${index + 1} de ${product.name} en ${product.material}`}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                            />
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
                 <div className="card-pad flex flex-col gap-3 flex-1 min-h-[270px]">
                   <h2 className="heading-h3">
@@ -412,23 +397,23 @@ export function CatalogPage() {
                         ? 'Escritorio de trabajo con estructura reforzada y pasacables.'
                         : product.category === 'reloj'
                           ? 'Reloj de pared tallado a mano con mecanismo silencioso.'
-                          : 'Mesa de madera maciza diseñada para uso intensivo diario.')}
+                        : product.category === 'mesa'
+                          ? 'Mesa de madera maciza diseñada para uso intensivo diario.'
+                          : 'Mueble de madera maciza con diseño artesanal y terminación personalizada.')}
                   </p>
                   <div className="mt-1 min-h-[30px] flex flex-wrap content-start gap-2 text-[11px]">
                     <span className="px-2.5 py-1 rounded-full bg-oliva/10 text-oliva">
                       {product.material.toUpperCase()}
                     </span>
                     <span className="px-2.5 py-1 rounded-full bg-madera/10 text-madera">
-                      {product.category === 'escritorio' && 'Oficina y home office'}
-                      {product.category === 'reloj' && 'Decoración mural'}
-                      {product.category === 'mesa' && 'Comedor y living'}
+                      {categoryContextLabels[product.category]}
                     </span>
                   </div>
                   <div className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-crema/80 text-[11px] text-madera px-2.5 py-1 border border-madera/15">
                     <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden="true">
                       <path d="M12 1.75a10.25 10.25 0 1 0 0 20.5 10.25 10.25 0 0 0 0-20.5Zm0 1.5a8.75 8.75 0 1 1 0 17.5 8.75 8.75 0 0 1 0-17.5Zm-.75 3.25c0-.41.34-.75.75-.75s.75.34.75.75v5.05l3.2 1.85a.75.75 0 0 1-.75 1.3l-3.6-2.08a.75 0 0 1-.35-.65V6.5Z" fill="currentColor" />
                     </svg>
-                    <span>Fabricación 30-45 días</span>
+                    <span>{product.leadTime ?? 'Fabricación 30-45 días'}</span>
                   </div>
                   <div className="mt-auto grid grid-cols-1 gap-2.5">
                     <a
@@ -502,54 +487,58 @@ export function CatalogPage() {
               <div className="p-5">
                 <div className="group relative rounded-2xl overflow-hidden border border-madera/10 bg-neutral-100">
                   <img
-                    src={quickImages[activeImageIndex]}
-                    alt={`${quickProduct.name} vista ${activeImageIndex + 1}`}
+                    src={quickImages[quickActiveImageIndex]}
+                    alt={`${quickProduct.name} en ${quickProduct.material} - foto ${quickActiveImageIndex + 1}`}
                     className="w-full h-64 sm:h-80 object-contain bg-crema/40 transition-opacity duration-500 ease-out cursor-zoom-in"
                     loading="lazy"
                     style={{ touchAction: 'pinch-zoom' }}
                   />
-                  <button
-                    type="button"
-                    aria-label="Imagen anterior"
-                    onClick={() =>
-                      setActiveImageIndex(
-                        (prev) => (prev - 1 + quickImages.length) % quickImages.length,
-                      )
-                    }
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
-                      <path d="M15.5 4.5 8 12l7.5 7.5-1.5 1.5L5 12l9-9 1.5 1.5Z" fill="currentColor" />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Imagen siguiente"
-                    onClick={() =>
-                      setActiveImageIndex(
-                        (prev) => (prev + 1) % quickImages.length,
-                      )
-                    }
-                    className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
-                      <path d="M8.5 4.5 7 6l7.5 6L7 18l1.5 1.5 9-7.5-9-7.5Z" fill="currentColor" />
-                    </svg>
-                  </button>
-                  <div className="absolute bottom-2 left-2 right-2 flex items-center gap-2 overflow-x-auto rounded-full bg-white/80 px-2 py-2 shadow-sm">
-                    {quickImages.map((src, idx) => (
+                  {hasQuickManyImages && (
+                    <>
                       <button
-                        key={src}
                         type="button"
-                        onClick={() => setActiveImageIndex(idx)}
-                        className={`h-12 w-12 rounded-md overflow-hidden border ${idx === activeImageIndex ? 'border-madera shadow-[0_0_0_2px_rgba(139,90,43,0.2)]' : 'border-transparent'} bg-white shadow-sm`}
-                        aria-label={`Imagen ${idx + 1}`}
-                        title={`Imagen ${idx + 1}`}
+                        aria-label="Imagen anterior"
+                        onClick={() =>
+                          setActiveImageIndex(
+                            (prev) => (prev - 1 + quickImages.length) % quickImages.length,
+                          )
+                        }
+                        className="absolute left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
                       >
-                        <img src={src} alt={`${quickProduct.name} miniatura ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
+                        <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
+                          <path d="M15.5 4.5 8 12l7.5 7.5-1.5 1.5L5 12l9-9 1.5 1.5Z" fill="currentColor" />
+                        </svg>
                       </button>
-                    ))}
-                  </div>
+                      <button
+                        type="button"
+                        aria-label="Imagen siguiente"
+                        onClick={() =>
+                          setActiveImageIndex(
+                            (prev) => (prev + 1) % quickImages.length,
+                          )
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-madera/15 bg-white/85 text-madera shadow-sm backdrop-blur transition-all duration-200 hover:bg-white hover:shadow-md"
+                      >
+                        <svg viewBox="0 0 24 24" className="h-4 w-4 mx-auto" aria-hidden="true">
+                          <path d="M8.5 4.5 7 6l7.5 6L7 18l1.5 1.5 9-7.5-9-7.5Z" fill="currentColor" />
+                        </svg>
+                      </button>
+                      <div className="absolute bottom-2 left-2 right-2 flex items-center gap-2 overflow-x-auto rounded-full bg-white/80 px-2 py-2 shadow-sm">
+                        {quickImages.map((src, idx) => (
+                          <button
+                            key={src}
+                            type="button"
+                            onClick={() => setActiveImageIndex(idx)}
+                            className={`h-12 w-12 rounded-md overflow-hidden border ${idx === quickActiveImageIndex ? 'border-madera shadow-[0_0_0_2px_rgba(139,90,43,0.2)]' : 'border-transparent'} bg-white shadow-sm`}
+                            aria-label={`Imagen ${idx + 1}`}
+                            title={`Imagen ${idx + 1}`}
+                          >
+                            <img src={src} alt={`Miniatura ${idx + 1} de ${quickProduct.name} en ${quickProduct.material}`} className="w-full h-full object-cover" loading="lazy" />
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="p-5 sm:p-6 flex flex-col gap-3.5">
@@ -562,7 +551,7 @@ export function CatalogPage() {
                         : 'Mesa de madera maciza resistente al uso intensivo. Terminación artesanal y apta para 6 a 8 personas según modelo.')}
                 </p>
                 <p className="text-xs text-neutral-500">
-                  Fabricación estimada 30–45 días · Maderas: roble, pino, cedro · Acabados: natural, aceitado, laqueado.
+                  {`${quickProduct.leadTime ?? 'Fabricación 30-45 días'} · Maderas: roble, pino, cedro · Acabados: natural, aceitado, laqueado.`}
                 </p>
                 <div className="mt-2 grid grid-cols-1 gap-2.5">
                   <button

@@ -8,6 +8,8 @@ export type Product = {
   category: ProductCategory
   material: ProductMaterial
   description?: string
+  images: string[]
+  leadTime?: string
 }
 
 export type CartItem = {

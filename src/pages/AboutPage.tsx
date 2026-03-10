@@ -10,11 +10,11 @@ const aboutAssets = {
 
 export function AboutPage() {
   usePageMeta({
-    title: 'Sobre ANJU Carpintería · Taller de muebles a medida en Buenos Aires',
+    title: 'Sobre ANJU · Carpintería a medida en Villa Ballester, Buenos Aires',
     description:
-      'Conocé la historia de ANJU Carpintería familiar en Buenos Aires. Más de 30 años diseñando y fabricando muebles de madera a medida para hogares y negocios.',
+      'Conocé ANJU Carpintería, taller familiar en Villa Ballester con más de 30 años fabricando muebles de madera y placares a medida en Buenos Aires.',
     keywords:
-      'sobre carpintería ANJU, carpintería familiar Buenos Aires, muebles a medida historia',
+      'carpintería familiar Villa Ballester, historia ANJU Carpintería, muebles a medida Buenos Aires',
   })
   return (
     <div className="page-shell max-w-5xl">
@@ -25,7 +25,7 @@ export function AboutPage() {
               Sobre nosotros
             </p>
             <h1 className="heading-h1">
-              Taller familiar de Buenos Aires, dedicado al mueble a medida
+              Taller familiar de Villa Ballester dedicado a muebles a medida
             </h1>
             <p className="text-base text-neutral-700">
               ANJU es una carpintería familiar fundada a principios de los 90 en
@@ -82,7 +82,7 @@ export function AboutPage() {
           <div className="aspect-[4/3] overflow-hidden">
             <img
               src={aboutAssets.detalleBanco}
-              alt="Banco de trabajo con piezas en proceso de armado"
+              alt="Banco de trabajo del taller de carpintería ANJU en Villa Ballester"
               loading="lazy"
               className="h-full w-full object-cover"
             />
@@ -95,7 +95,7 @@ export function AboutPage() {
           <div className="aspect-[4/3] overflow-hidden">
             <img
               src={aboutAssets.muebleInstalado}
-              alt="Mueble de madera instalado en comedor"
+              alt="Mueble de madera a medida instalado en comedor de Buenos Aires"
               loading="lazy"
               className="h-full w-full object-cover"
             />

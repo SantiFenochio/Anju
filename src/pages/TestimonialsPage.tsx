@@ -20,18 +20,18 @@ const testimonials = [
 
 export function TestimonialsPage() {
   usePageMeta({
-    title: 'Testimonios de clientes · ANJU Carpintería Buenos Aires',
+    title: 'Testimonios de carpintería a medida en Buenos Aires · ANJU',
     description:
-      'Opiniones de clientes de ANJU Carpintería. Muebles de madera a medida para hogares, estudios profesionales y locales comerciales en Buenos Aires.',
+      'Opiniones de clientes sobre ANJU Carpintería en Villa Ballester. Proyectos de muebles de madera y trabajos a medida en Buenos Aires y Zona Norte.',
     keywords:
-      'opiniones carpintería ANJU, testimonios muebles a medida Buenos Aires, reseñas ANJU',
+      'testimonios carpintería Villa Ballester, reseñas muebles a medida Buenos Aires, opiniones ANJU Carpintería',
   })
 
   return (
     <div className="page-shell max-w-5xl">
       <header className="space-y-2 max-w-2xl">
         <h1 className="heading-h1">
-          Testimonios de clientes
+          Testimonios de clientes de carpintería a medida en Buenos Aires
         </h1>
         <p className="text-sm text-neutral-700">
           Una selección de experiencias de clientes que confiaron en ANJU para

@@ -10,9 +10,20 @@ export function usePageMeta({ title, description, keywords }: PageMetaOptions) {
   useEffect(() => {
     if (typeof document === 'undefined') return
 
+    const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '')
+    const currentOrigin =
+      typeof window !== 'undefined' && window.location.origin
+        ? window.location.origin
+        : ''
+    const baseUrl = siteUrl || currentOrigin || 'https://anju.com.ar'
+    const canonicalUrl =
+      typeof window !== 'undefined'
+        ? `${baseUrl}${window.location.pathname}`
+        : baseUrl
+
     document.title = title
 
-    const ensureMeta = (name: string, content: string) => {
+    const ensureMetaByName = (name: string, content: string) => {
       if (!content) return
       let element = document.querySelector<HTMLMetaElement>(
         `meta[name="${name}"]`,
@@ -25,9 +36,38 @@ export function usePageMeta({ title, description, keywords }: PageMetaOptions) {
       element.content = content
     }
 
-    ensureMeta('description', description)
-    if (keywords) {
-      ensureMeta('keywords', keywords)
+    const ensureMetaByProperty = (property: string, content: string) => {
+      if (!content) return
+      let element = document.querySelector<HTMLMetaElement>(
+        `meta[property="${property}"]`,
+      )
+      if (!element) {
+        element = document.createElement('meta')
+        element.setAttribute('property', property)
+        document.head.appendChild(element)
+      }
+      element.content = content
     }
+
+    const ensureCanonical = (href: string) => {
+      let element = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+      if (!element) {
+        element = document.createElement('link')
+        element.rel = 'canonical'
+        document.head.appendChild(element)
+      }
+      element.href = href
+    }
+
+    ensureMetaByName('description', description)
+    if (keywords) {
+      ensureMetaByName('keywords', keywords)
+    }
+    ensureMetaByProperty('og:title', title)
+    ensureMetaByProperty('og:description', description)
+    ensureMetaByProperty('og:url', canonicalUrl)
+    ensureMetaByName('twitter:title', title)
+    ensureMetaByName('twitter:description', description)
+    ensureCanonical(canonicalUrl)
   }, [title, description, keywords])
 }

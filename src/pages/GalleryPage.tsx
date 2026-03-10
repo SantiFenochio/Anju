@@ -82,11 +82,11 @@ const galleryImages = [
 
 export function GalleryPage() {
   usePageMeta({
-    title: 'Galería de muebles y taller · ANJU Carpintería Buenos Aires',
+    title: 'Galería de carpintería y muebles en Buenos Aires · ANJU Villa Ballester',
     description:
-      'Fotos del taller de carpintería ANJU y muebles de madera a medida instalados en hogares, oficinas y locales de Buenos Aires.',
+      'Galería del taller ANJU en Villa Ballester y muebles de madera a medida instalados en hogares, oficinas y locales de Buenos Aires y Zona Norte.',
     keywords:
-      'galería muebles de madera, taller de carpintería Buenos Aires, proyectos ANJU',
+      'galería carpintería Villa Ballester, muebles de madera Buenos Aires, proyectos de carpintería zona norte',
   })
   const workshopImages = useMemo(
     () => galleryImages.filter((item) => item.type === 'taller'),
@@ -119,7 +119,7 @@ export function GalleryPage() {
             Galería ANJU
           </p>
           <h1 className="heading-h1">
-            Taller y muebles instalados en uso real
+            Galería de taller y muebles a medida en Buenos Aires
           </h1>
           <p className="text-base text-neutral-700">
             Reunimos escenas de trabajo y entregas para mostrar cómo resolvemos
